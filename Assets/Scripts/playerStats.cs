@@ -126,6 +126,11 @@ public class playerStats : MonoBehaviour
                     openShop();
                 }
 
+                if (hit.transform.gameObject.TryGetComponent<Greenify>(out Greenify greenify)) {
+                    greenify.unGreen();
+                    print("trying to ungreen");
+                }
+
             }
 
         }
