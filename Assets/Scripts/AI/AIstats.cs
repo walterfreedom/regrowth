@@ -104,7 +104,6 @@ public class AIstats : MonoBehaviour
             health.DamageOrKill(damage, item, 3, NPC);         
     }
 
-    [Server]
     public void DamageOrKill(int damage, GameObject ItemToDealDamage, float knockback, GameObject attacker)
     {
         //if health wont drop to or below zero after attack
