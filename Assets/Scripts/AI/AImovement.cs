@@ -40,14 +40,15 @@ public class AImovement : MonoBehaviour
   
     private void Start()
     {
-        AIqueue = GameObject.Find("AstarPath").GetComponent<AIqueue>();
+        AIqueue = GameObject.Find("Astarpath").GetComponent<AIqueue>();
         NPCobject = gameObject;
         renderer = gameObject.GetComponent<SpriteRenderer>();
         astarAI = gameObject.GetComponent<IAstarAI>();
         seeker = gameObject.GetComponent<Seeker>();
         AIPath = gameObject.GetComponent<AIPath>();
+        aIDestination.target = null;
 
-       
+
         //without this AI starts travelling towards (0,0,0) when he spawns, do not change this
         owner = NPCobject;
         if(TryGetComponent(out Animator anr)){
@@ -162,16 +163,21 @@ public class AImovement : MonoBehaviour
     {
         
         var AIstats = gameObject.GetComponent<AIstats>();
-        if (Enemylist.Contains(aIDestination.target.gameObject.tag)) {
-            if (AIstats.isranged && aIDestination.target!=null)
+        if (aIDestination.target != null)
+        {
+            if (Enemylist.Contains(aIDestination.target.gameObject.tag))
             {
-                AIstats.AIshootat(aIDestination.target.gameObject);
-            }
-            else
-            {
-               AIstats.MeleeAttack();
+                if (AIstats.isranged && aIDestination.target != null)
+                {
+                    AIstats.AIshootat(aIDestination.target.gameObject);
+                }
+                else
+                {
+                    AIstats.MeleeAttack();
+                }
             }
         }
+        
         
     }
 
