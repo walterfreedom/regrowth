@@ -22,16 +22,28 @@ public class playerStats : MonoBehaviour
     public int score=0;
     List<GameObject> stufftodestory = new List<GameObject>();
 
+    public int oxygen=120;
+    int maxox = 120;
+    public bool isinbreathable = true;
+    public int breathable = 0;
+    private IEnumerator breath;
+
+    GameObject oxygencanvas;
+
     private void Start()
     {
+        
         shopcanvas = gameObject.transform.Find("shopcanvas").gameObject;
         camera = gameObject.transform.Find("Main Camera").GetComponent<Camera>();
         player = gameObject;
         sellmode = gameObject.transform.Find("shopcanvas").Find("sellmode").GetComponent<Button>();
         moneytext = gameObject.transform.Find("Canvas").Find("money").GetComponent<TMP_Text>();
+        oxygencanvas = gameObject.transform.Find("Canvas").Find("oxygen").gameObject;
 
         sellmode.onClick.AddListener(setSellmode);
+
         updateMoney();
+        InvokeRepeating("breathloop", 0, 1.0f);
         //get inventory slots 
         var canvas = transform.Find("Canvas");
         var a =canvas.GetComponentInChildren<Transform>();
@@ -44,6 +56,10 @@ public class playerStats : MonoBehaviour
             }
         }
         selectedslot = inventory[0];
+
+        
+        //breath = Oxygencheck(isinbreathable);
+        //StartCoroutine(breath);
     }
 
     private void Update()
@@ -255,6 +271,65 @@ public class playerStats : MonoBehaviour
         score += scoreincrease;
         transform.Find("Canvas").transform.Find("score").GetComponent<TMP_Text>().text="Amogus: "+score.ToString();
     }
+
+    #region Survival
+
+    private IEnumerator Oxygencheck(bool breathable)
+    {
+        while (true)
+        {
+            Debug.Log(breathable);
+            if (isinbreathable)
+            {
+                oxygen += 10;
+                Debug.Log(oxygen);
+                updateoxygen(oxygen);
+                yield return new WaitForSeconds(1);
+            }
+            else
+            {
+                oxygen--;
+                updateoxygen(oxygen);
+                yield return new WaitForSeconds(1);
+            }
+        }
+    }
+
+    void breathloop()
+    {
+        print(breathable);
+        if (gameObject.tag=="Player")
+        {
+            if (breathable == 1)
+            {
+                if (oxygen + 10 < maxox)
+                {
+                    oxygen += 10;
+                    updateoxygen(oxygen);
+                }
+                else
+                {
+                    oxygen = maxox;
+                    updateoxygen(oxygen);
+                }
+              
+            }
+            else
+            {
+                oxygen--;
+                updateoxygen(oxygen);
+
+            }
+        }
+          
+    }
+
+    void updateoxygen(int updatedoxygen)
+    {
+        oxygencanvas.GetComponent<TMP_Text>().text = updatedoxygen.ToString();
+    }
+
+    #endregion
     public void setSellmode()
     {
         if (isShopping)
