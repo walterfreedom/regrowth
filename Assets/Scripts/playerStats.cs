@@ -274,31 +274,10 @@ public class playerStats : MonoBehaviour
 
     #region Survival
 
-    private IEnumerator Oxygencheck(bool breathable)
-    {
-        while (true)
-        {
-            Debug.Log(breathable);
-            if (isinbreathable)
-            {
-                oxygen += 10;
-                Debug.Log(oxygen);
-                updateoxygen(oxygen);
-                yield return new WaitForSeconds(1);
-            }
-            else
-            {
-                oxygen--;
-                updateoxygen(oxygen);
-                yield return new WaitForSeconds(1);
-            }
-        }
-    }
-
     void breathloop()
     {
         print(breathable);
-        if (gameObject.tag=="Player")
+        if (gameObject.tag == "Player")
         {
             if (breathable == 1)
             {
@@ -312,7 +291,7 @@ public class playerStats : MonoBehaviour
                     oxygen = maxox;
                     updateoxygen(oxygen);
                 }
-              
+
             }
             else
             {
@@ -321,8 +300,9 @@ public class playerStats : MonoBehaviour
 
             }
         }
-          
+
     }
+
 
     void updateoxygen(int updatedoxygen)
     {

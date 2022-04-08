@@ -8,7 +8,7 @@ public class airQuality : MonoBehaviour
     {
         if (collision.TryGetComponent<playerStats>(out playerStats stats))
         {
-            stats.breathable = 1;
+            stats.breathable = 0;
         }
         print("aaaa");
     }
@@ -16,7 +16,7 @@ public class airQuality : MonoBehaviour
     {
         if (collision.TryGetComponent<playerStats>(out playerStats stats))
         {
-            stats.breathable = 0;
+            stats.breathable = 1;
         }
     }
 }
