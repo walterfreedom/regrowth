@@ -17,7 +17,7 @@ public class movement : MonoBehaviour
     {
 
         rb = gameObject.GetComponent<Rigidbody2D>();
-      
+        
          
          //GameObject.Find("AstarPath").GetComponent<AIqueue>().players.Add(gameObject);         
         

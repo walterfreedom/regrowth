@@ -10,15 +10,27 @@ public class Stats : MonoBehaviour
 
     public int health;
     public int damage;
-    public float maxspeed;
     public float speed;
+    public float basespeed;
     public int range;
     public List<Status> statuslist;
     public List<string> enemylist;
-    
+
+    public int oxygen = 120;
+    public int maxox = 120;
+    public bool breathable = true;
+
+    private void Start()
+    {
+        foreach (Status status in statuslist)
+        {
+            status.applyEffect(status,gameObject.GetComponent<Stats>());
+        }
+    }
+
 }
 
-public class Status
+public class Status:Stats
 {
     string name;
     float duration;
@@ -42,18 +54,48 @@ public class Status
                 stats.speed = 0;
             }
 
+            duration -= 1;
+            return true;
+        }
+        else if (duration == -1)
+        {
+            if (status.name == "breath")
+            {
+                if (stats.breathable)
+                {
+                    if (stats.oxygen + 10 < stats.maxox)
+                    {
+                        stats.oxygen += 10;
+                    }
+                    else
+                    {
+                        stats.oxygen = stats.maxox;
+                    }
+
+                }
+                else
+                {
+                    stats.oxygen--;
+                }
+            }
+            if(status.name== "temp")
+            {
+
+            }
+
             return true;
         }
         else
         {
-            //duration = 0;
-            //a.speed = baseSpeed;
+            if (status.name == "stun")
+            {
+                stats.speed = stats.basespeed;
+                stats.statuslist.Remove(status);
+            }
 
-            //return false;
+            return false;
         }
 
-
-        return true;
     }
     public void applyEffect(int strength, string Statustype, GameObject target)
     {

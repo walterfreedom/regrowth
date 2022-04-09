@@ -30,7 +30,6 @@ public class playerStats : MonoBehaviour
 
     GameObject oxygencanvas;
 
-    public List<Status> effects;
     private void Start()
     {
         
@@ -277,34 +276,7 @@ public class playerStats : MonoBehaviour
 
     void breathloop()
     {
-        foreach(Status status in effects)
-        {
-            
-        }
-        print(breathable);
-        if (gameObject.tag == "Player")
-        {
-            if (breathable == 1)
-            {
-                if (oxygen + 10 < maxox)
-                {
-                    oxygen += 10;
-                    updateoxygen(oxygen);
-                }
-                else
-                {
-                    oxygen = maxox;
-                    updateoxygen(oxygen);
-                }
-
-            }
-            else
-            {
-                oxygen--;
-                updateoxygen(oxygen);
-
-            }
-        }
+        
 
     }
 
