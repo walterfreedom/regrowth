@@ -22,12 +22,6 @@ public class playerStats : MonoBehaviour
     public int score=0;
     List<GameObject> stufftodestory = new List<GameObject>();
 
-    public int oxygen=120;
-    int maxox = 120;
-    public bool isinbreathable = true;
-    public int breathable = 0;
-    private IEnumerator breath;
-
     GameObject oxygencanvas;
 
     private void Start()
@@ -43,7 +37,6 @@ public class playerStats : MonoBehaviour
         sellmode.onClick.AddListener(setSellmode);
 
         updateMoney();
-        InvokeRepeating("breathloop", 0, 1.0f);
         //get inventory slots 
         var canvas = transform.Find("Canvas");
         var a =canvas.GetComponentInChildren<Transform>();
@@ -56,10 +49,6 @@ public class playerStats : MonoBehaviour
             }
         }
         selectedslot = inventory[0];
-
-        
-        //breath = Oxygencheck(isinbreathable);
-        //StartCoroutine(breath);
     }
 
     private void Update()
@@ -274,14 +263,8 @@ public class playerStats : MonoBehaviour
 
     #region Survival
 
-    void breathloop()
-    {
-        
 
-    }
-
-
-    void updateoxygen(int updatedoxygen)
+    public void updateoxygen(int updatedoxygen)
     {
         oxygencanvas.GetComponent<TMP_Text>().text = updatedoxygen.ToString();
     }

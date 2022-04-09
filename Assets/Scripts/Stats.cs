@@ -20,27 +20,37 @@ public class Stats : MonoBehaviour
     public int maxox = 120;
     public bool breathable = true;
 
+    public bool needsair = true;
+
     private void Start()
+    {
+        if (needsair)
+            statuslist.Add(new Status("breath", -1, 1));
+        InvokeRepeating("statuscheck", 0, 1.0f);
+    }
+
+    void statuscheck()
     {
         foreach (Status status in statuslist)
         {
-            status.applyEffect(status,gameObject.GetComponent<Stats>());
+            status.applyEffect(status, gameObject.GetComponent<Stats>());
         }
     }
-
 }
 
 public class Status:Stats
 {
     string name;
     float duration;
-    string strength;
-    public Status(string n, float dur, string str)
+    int strength;
+    public Status(string n, float dur, int str)
     {
         name = n;
         strength = str;
         duration = dur;
     }
+
+    
 
     public bool applyEffect(Status status, Stats stats)
     {
@@ -71,11 +81,16 @@ public class Status:Stats
                     {
                         stats.oxygen = stats.maxox;
                     }
-
                 }
                 else
                 {
+
                     stats.oxygen--;
+                }
+               if(gameObject.tag=="Player")
+                {
+                    var pstats = gameObject.GetComponent<playerStats>();
+                    pstats.updateoxygen(oxygen);
                 }
             }
             if(status.name== "temp")

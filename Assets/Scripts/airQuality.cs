@@ -6,17 +6,17 @@ public class airQuality : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<playerStats>(out playerStats stats))
+        if (collision.TryGetComponent<Stats>(out Stats stats))
         {
-            stats.breathable = 0;
+            stats.breathable = false;
         }
         print("aaaa");
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<playerStats>(out playerStats stats))
+        if (collision.TryGetComponent<Stats>(out Stats stats))
         {
-            stats.breathable = 1;
+            stats.breathable = true;
         }
     }
 }

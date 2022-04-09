@@ -92958,6 +92958,32 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0625, y: 1.5625}
   m_EdgeRadius: 0
+--- !u!114 &1487665535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487665528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fadcf24ee42a2b6428e376ae3765b27b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: 
+  faction: 
+  race: 
+  health: 0
+  damage: 0
+  speed: 0
+  basespeed: 0
+  range: 0
+  statuslist: []
+  enemylist: []
+  oxygen: 120
+  maxox: 120
+  breathable: 1
+  needsair: 1
 --- !u!1 &1835615458
 GameObject:
   m_ObjectHideFlags: 0
