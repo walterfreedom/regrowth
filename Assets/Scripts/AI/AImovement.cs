@@ -40,13 +40,14 @@ public class AImovement : MonoBehaviour
   
     private void Start()
     {
+        aIDestination = gameObject.GetComponent<AIDestinationSetter>();
         AIqueue = GameObject.Find("Astarpath").GetComponent<AIqueue>();
         NPCobject = gameObject;
         renderer = gameObject.GetComponent<SpriteRenderer>();
         astarAI = gameObject.GetComponent<IAstarAI>();
         seeker = gameObject.GetComponent<Seeker>();
         AIPath = gameObject.GetComponent<AIPath>();
-        aIDestination.target = null;
+        aIDestination.target = gameObject.transform;
 
 
         //without this AI starts travelling towards (0,0,0) when he spawns, do not change this
@@ -189,7 +190,16 @@ public class AImovement : MonoBehaviour
         //GameObject targetObject = new GameObject();
         //targetObject.transform.position = lastPosition;
         List<string> tags = new List<string>();
-        tags.AddRange(tagstocopy);
+        if (tagstocopy.Count != 0)
+        {
+            tags.AddRange(tagstocopy);
+        }
+
+        else
+        {
+            return;
+        }
+        
         bool a = true;
         while (a && gameObjects.Length != 0)
         {
@@ -217,6 +227,8 @@ public class AImovement : MonoBehaviour
                 {
                     //this foreach is used for finding the closest visible gameobject, and targeting it
                     List<GameObject> visibleObjectList = new List<GameObject>();
+
+                    
                     foreach (GameObject detectedObject in DetectedObjects)
                     {
                         //you changed this to vector 2, if breaks turn back to v3
