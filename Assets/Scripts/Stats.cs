@@ -71,6 +71,7 @@ public class Status:Stats
         {
             if (status.name == "breath")
             {
+                
                 if (stats.breathable)
                 {
                     if (stats.oxygen + 10 < stats.maxox)
@@ -87,11 +88,12 @@ public class Status:Stats
 
                     stats.oxygen--;
                 }
-               if(gameObject.tag=="Player")
+                if (stats.gameObject.tag == "Player")
                 {
-                    var pstats = gameObject.GetComponent<playerStats>();
-                    pstats.updateoxygen(oxygen);
+                    var pstats = stats.gameObject.GetComponent<playerStats>();
+                    pstats.updateoxygen(stats.oxygen);
                 }
+
             }
             if(status.name== "temp")
             {
