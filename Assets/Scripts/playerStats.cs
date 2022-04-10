@@ -181,6 +181,7 @@ public class playerStats : MonoBehaviour
                     }
                     newcraft.active = true;
                     newcraft.transform.position =new Vector2(newcraft.transform.position.x,craftingUI.transform.position.y+y);
+                    newcraft.transform.Find("craftbutton").GetComponent<craftButton>().bp = bp;
                     y -= 50;
                 }
                 craftingUI.active = true;
