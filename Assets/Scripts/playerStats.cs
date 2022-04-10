@@ -9,6 +9,8 @@ public class playerStats : MonoBehaviour
     public int allowedFollowers = 1;
     public List<GameObject> followerList;
     public List<GameObject> inventory;
+    public List<blueprint> crafting;
+
     public int money=1000;
     public bool isShopping;
     GameObject player;
@@ -23,6 +25,7 @@ public class playerStats : MonoBehaviour
     List<GameObject> stufftodestory = new List<GameObject>();
 
     GameObject oxygencanvas;
+    public GameObject craftingUI;
 
     private void Start()
     {
@@ -69,10 +72,19 @@ public class playerStats : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0)&&!isShopping)
         {
+            if(selectedslot.GetComponent<inventorySlot>().storedItems[0].TryGetComponent<blueprint>(out blueprint blueprint))
+            {
+                crafting.Add(blueprint);
+                var a = selectedslot.GetComponent<inventorySlot>().storedItems[0];
+                Destroy(a);
+            }
+            else
+            {
+                Vector3 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
+                mousePosition.z = 0;
+                selectedslot.GetComponent<inventorySlot>().dropItem(mousePosition);
+            }
             
-            Vector3 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 0;
-            selectedslot.GetComponent<inventorySlot>().dropItem(mousePosition);
         }
         if (Input.GetKeyDown("e"))
         {
@@ -140,7 +152,30 @@ public class playerStats : MonoBehaviour
 
         }
        
+        if (Input.GetKeyDown("i"))
+        {
+            if (craftingUI.active)
+            {
+                craftingUI.active = false;
+            }
+            else
+            {
+                GameObject templateSlot = craftingUI.transform.Find("craftslot").gameObject;
+                foreach(blueprint bp in crafting)
+                {
+                    var newcraft= Instantiate(templateSlot);
+                    var material = newcraft.transform.Find("recipe");
+                    newcraft.transform.Find("output").gameObject.GetComponent<Image>().sprite=bp.output[0].GetComponent<SpriteRenderer>().sprite;
+                    foreach(var ingredient in bp.materials)
+                    {
+                        GameObject recipebox = Instantiate(material).gameObject;
+                        recipebox.GetComponent<Image>().sprite = ingredient.GetComponent<SpriteRenderer>().sprite;
 
+                    }
+                }
+                craftingUI.active = true;
+            }
+        }
         if (Input.GetKey(KeyCode.Alpha1))
         {
             selectedslot.GetComponent<Image>().color = Color.white; ;
@@ -250,6 +285,11 @@ public class playerStats : MonoBehaviour
         isShopping = false;
     }
 
+    void addblueprint(blueprint blueprint)
+    {
+
+    }
+
     void openShop()
     {
         shopcanvas.active = true;
@@ -287,12 +327,18 @@ public class playerStats : MonoBehaviour
         moneytext.text = money.ToString();
     }
 
+    private void updateCrafting()
+    {
+        
+    }
+
     public void addtoinventory(GameObject itemtoadd)
     {
         bool foundslot = false;
         pickle pickle1 = itemtoadd.GetComponent<pickle>();
         foreach (GameObject item in inventory)
         {
+            //item is an independent inventory slot, not the item inside it.
             var storeditems = item.GetComponent<inventorySlot>().storedItems;
             if (storeditems.Count > 0)
             {

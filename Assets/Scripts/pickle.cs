@@ -8,5 +8,6 @@ public class pickle : MonoBehaviour
     public string itemname;
     public int value = 100;
     public bool infiniteitemspawn;
+ 
 
 }
