@@ -74,7 +74,8 @@ public class playerStats : MonoBehaviour
             {
                 crafting.Add(blueprint);
                 var a = selectedslot.GetComponent<inventorySlot>().storedItems[0];
-                Destroy(a);
+                selectedslot.GetComponent<inventorySlot>().dropItem();
+                  Destroy(a);
             }
             else
             {
@@ -162,22 +163,25 @@ public class playerStats : MonoBehaviour
             }
             else
             {
-                
+                float x = 0;
+                float y = 200;
                 foreach(blueprint bp in crafting)
                 {
-                    Debug.Log(bp.materials[1].name);
+                   
                     var newcraft= Instantiate(craftingslot, craftingUI.transform);
                     var material = newcraft.transform.Find("recipe");
                     newcraft.transform.Find("output").gameObject.GetComponent<Image>().sprite=bp.output[0].GetComponent<SpriteRenderer>().sprite;
                     newcraft.transform.Find("output").gameObject.GetComponent<Image>().color = bp.output[0].GetComponent<SpriteRenderer>().color;
                     foreach (var ingredient in bp.materials)
                     {
-                        Debug.Log(ingredient.name);
+                        
                         GameObject recipebox = Instantiate(material,newcraft.transform).gameObject;
                         recipebox.GetComponent<Image>().sprite = ingredient.GetComponent<SpriteRenderer>().sprite;
                         recipebox.GetComponent<Image>().color = ingredient.GetComponent<SpriteRenderer>().color;
                     }
                     newcraft.active = true;
+                    newcraft.transform.position =new Vector2(newcraft.transform.position.x,craftingUI.transform.position.y+y);
+                    y -= 50;
                 }
                 craftingUI.active = true;
             }
