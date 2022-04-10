@@ -26,10 +26,11 @@ public class playerStats : MonoBehaviour
 
     GameObject oxygencanvas;
     public GameObject craftingUI;
+    private GameObject craftingslot;
 
     private void Start()
     {
-        
+        craftingslot = gameObject.transform.Find("Canvas").Find("craftslot").gameObject;
         shopcanvas = gameObject.transform.Find("shopcanvas").gameObject;
         camera = gameObject.transform.Find("Main Camera").GetComponent<Camera>();
         player = gameObject;
@@ -65,12 +66,9 @@ public class playerStats : MonoBehaviour
             Vector2 mousePosition = Input.mousePosition;
             RaycastHit2D[] hits = Physics2D.RaycastAll(this.transform.position, mousePosition, 2);
             var stats = player.GetComponent<playerStats>();
-            foreach (var hit in hits)
-            {
-                              
-            }
+            
         }
-        if (Input.GetMouseButtonDown(0)&&!isShopping)
+        if (Input.GetMouseButtonDown(0)&&!isShopping&&selectedslot.GetComponent<inventorySlot>().storedItems.Count!=0)
         {
             if(selectedslot.GetComponent<inventorySlot>().storedItems[0].TryGetComponent<blueprint>(out blueprint blueprint))
             {
@@ -157,21 +155,29 @@ public class playerStats : MonoBehaviour
             if (craftingUI.active)
             {
                 craftingUI.active = false;
+                foreach(Transform child in craftingUI.transform)
+                {
+                    Destroy(child.gameObject);
+                }
             }
             else
             {
-                GameObject templateSlot = craftingUI.transform.Find("craftslot").gameObject;
+                
                 foreach(blueprint bp in crafting)
                 {
-                    var newcraft= Instantiate(templateSlot);
+                    Debug.Log(bp.materials[1].name);
+                    var newcraft= Instantiate(craftingslot, craftingUI.transform);
                     var material = newcraft.transform.Find("recipe");
                     newcraft.transform.Find("output").gameObject.GetComponent<Image>().sprite=bp.output[0].GetComponent<SpriteRenderer>().sprite;
-                    foreach(var ingredient in bp.materials)
+                    newcraft.transform.Find("output").gameObject.GetComponent<Image>().color = bp.output[0].GetComponent<SpriteRenderer>().color;
+                    foreach (var ingredient in bp.materials)
                     {
-                        GameObject recipebox = Instantiate(material).gameObject;
+                        Debug.Log(ingredient.name);
+                        GameObject recipebox = Instantiate(material,newcraft.transform).gameObject;
                         recipebox.GetComponent<Image>().sprite = ingredient.GetComponent<SpriteRenderer>().sprite;
-
+                        recipebox.GetComponent<Image>().color = ingredient.GetComponent<SpriteRenderer>().color;
                     }
+                    newcraft.active = true;
                 }
                 craftingUI.active = true;
             }
