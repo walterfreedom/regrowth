@@ -13,18 +13,20 @@ public class craftButton : MonoBehaviour
         List<GameObject> tempinventory=null;
         List<GameObject> itemstodestroylist = new List<GameObject>();
         int x = 0;
-        foreach (var item in pstats.inventory)
+        foreach (var material in bp.materials)
         {
-           
-            
-            foreach(var material in bp.materials)
+          
+
+            foreach (var item in pstats.inventory)
             {
+                
                 if (item.GetComponent<inventorySlot>().storedItems.Count > 0)
                 {
-                    if (material.name == item.GetComponent<inventorySlot>().storedItems[0].name)
+                    Debug.Log("comparing " + material.GetComponent<pickle>().itemname + " to " + item.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().itemname);
+                    if (material.GetComponent<pickle>().itemname == item.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().itemname)
                     {
-                        itemstodestroylist.Add(item);
-
+                        itemstodestroylist.Add(item.GetComponent<inventorySlot>().storedItems[0]);
+                        Debug.Log("found match");
                         x++;
                     }
                 }
