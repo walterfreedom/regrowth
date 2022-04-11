@@ -15,31 +15,41 @@ public class craftButton : MonoBehaviour
         int x = 0;
         foreach (var material in bp.materials)
         {
-          
-
+            
             foreach (var item in pstats.inventory)
             {
-                
-                if (item.GetComponent<inventorySlot>().storedItems.Count > 0)
+                bool matchfound = false;
+                foreach (var resource in item.GetComponent<inventorySlot>().storedItems)
                 {
-                    Debug.Log("comparing " + material.GetComponent<pickle>().itemname + " to " + item.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().itemname);
-                    if (material.GetComponent<pickle>().itemname == item.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().itemname)
-                    {
-                        itemstodestroylist.Add(item.GetComponent<inventorySlot>().storedItems[0]);
-                        Debug.Log("found match");
-                        x++;
-                    }
+                        Debug.Log("comparing " + material.GetComponent<pickle>().itemname + " to " + resource.GetComponent<pickle>().itemname);
+                        if (material.GetComponent<pickle>().itemname == resource.GetComponent<pickle>().itemname&& !itemstodestroylist.Contains(resource))
+                        {
+                            itemstodestroylist.Add(item);
+                            Debug.Log("found match");
+                            x++;
+                            matchfound = true;
+                            break;
+                        }
                 }
-                
+                if (matchfound)
+                {
+                    break;
+                }
+                    
             }
+            
         }
+
+        
 
         if (itemstodestroylist.Count == bp.materials.Count)
         {
+            Debug.Log("Item can be crafted!");
             foreach (var item in itemstodestroylist)
             {
+                var itd = item.GetComponent<inventorySlot>().storedItems[0];
                 item.GetComponent<inventorySlot>().dropItem();
-                Destroy(item);
+                Destroy(itd);
             }
             var a = Instantiate(bp.output[0]);
             player.GetComponent<playerStats>().addtoinventory(a);
