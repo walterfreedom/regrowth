@@ -19,14 +19,24 @@ public class Stats : MonoBehaviour
     public int oxygen = 120;
     public int maxox = 120;
     public bool breathable = true;
+    public float maxtemp = 32.0f;
+    public float mintemp = 5.0f;
+
+    public float currenttemp = 18.0f;
+    public float ambtemp = 0.0f;
+    public List<float> templist;
 
     public bool needsair = true;
-
+    public bool tempsensitive = true;
     private void Start()
     {
+        templist.Add(0);
         if (needsair)
             statuslist.Add(new Status("breath", -1, 1));
-        InvokeRepeating("statuscheck", 0, 1.0f);
+        if (tempsensitive)
+            statuslist.Add(new Status("temp", -1, 1));
+            InvokeRepeating("statuscheck", 0, 1.0f);
+    
     }
 
     void statuscheck()
@@ -34,18 +44,19 @@ public class Stats : MonoBehaviour
         foreach (Status status in statuslist)
         {
             status.applyEffect(status, gameObject.GetComponent<Stats>());
+            //Debug.Log("statusname= " + status.stname);
         }
     }
 }
 
 public class Status:Stats
 {
-    string name;
+    public string stname;
     float duration;
     int strength;
     public Status(string n, float dur, int str)
     {
-        name = n;
+        stname = n;
         strength = str;
         duration = dur;
     }
@@ -58,7 +69,7 @@ public class Status:Stats
         if (status.duration - Time.deltaTime > 0)
         {
 
-            if (status.name == "stun")
+            if (status.stname == "stun")
             {
                 status.duration -= Time.deltaTime;
                 stats.speed = 0;
@@ -69,7 +80,7 @@ public class Status:Stats
         }
         else if (duration == -1)
         {
-            if (status.name == "breath")
+            if (status.stname == "breath")
             {
                 
                 if (stats.breathable)
@@ -95,16 +106,21 @@ public class Status:Stats
                 }
 
             }
-            if(status.name== "temp")
+            if(status.stname== "temp")
             {
-
+                var newtemp=0.0f;
+                foreach(float tempsource in stats.templist)
+                {
+                    newtemp += (stats.ambtemp + tempsource) * stats.templist.Count;
+                }
+                Debug.Log(newtemp);
             }
 
             return true;
         }
         else
         {
-            if (status.name == "stun")
+            if (status.stname == "stun")
             {
                 stats.speed = stats.basespeed;
                 stats.statuslist.Remove(status);
