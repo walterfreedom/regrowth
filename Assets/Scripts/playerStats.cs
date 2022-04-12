@@ -77,6 +77,10 @@ public class playerStats : MonoBehaviour
                 selectedslot.GetComponent<inventorySlot>().dropItem();
                   Destroy(a);
             }
+            else if (selectedslot.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().category == "weapon")
+            {
+                //this will be attack script for player
+            }
             else
             {
                 Vector3 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
