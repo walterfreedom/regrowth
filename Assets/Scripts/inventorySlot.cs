@@ -73,6 +73,10 @@ public class inventorySlot : MonoBehaviour
             }
         }
     }
+    public void holdItem()
+    {
+        gameObject.transform.parent.parent.GetComponent<playerStats>();
+    }
     public void dropItem(Vector3 position)
     {
         if (gameObject.transform.root.GetComponent<playerStats>().isShopping)

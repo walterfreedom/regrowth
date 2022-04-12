@@ -27,6 +27,10 @@ public class playerStats : MonoBehaviour
     GameObject oxygencanvas;
     public GameObject craftingUI;
     private GameObject craftingslot;
+    public GameObject chestUI;
+
+    public List<GameObject> tempitems;
+    bool inventoryMode;
 
     private void Start()
     {
@@ -157,6 +161,7 @@ public class playerStats : MonoBehaviour
        
         if (Input.GetKeyDown("i"))
         {
+          
             if (craftingUI.active)
             {
                 craftingUI.active = false;
@@ -164,9 +169,11 @@ public class playerStats : MonoBehaviour
                 {
                     Destroy(child.gameObject);
                 }
+                inventoryMode = false;
             }
             else
             {
+                inventoryMode = true;
                 float x = 0;
                 float y = 200;
                 foreach(blueprint bp in crafting)
@@ -305,6 +312,26 @@ public class playerStats : MonoBehaviour
 
     }
 
+    public void putItemInTempItem(List<GameObject> items)
+    {
+
+    }
+
+    public void putItemInTempItem(GameObject item)
+    {
+        if (tempitems.Count == 0)
+        {
+            tempitems.Add(item);
+        }
+        else if (tempitems[0].GetComponent<pickle>().itemname == item.GetComponent<pickle>().itemname)
+        {
+            tempitems.Add(item);
+        }
+        else
+        {
+           
+        }
+    }
     void openShop()
     {
         shopcanvas.active = true;
