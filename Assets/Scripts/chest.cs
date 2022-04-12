@@ -6,16 +6,21 @@ using TMPro;
 
 public class chest : MonoBehaviour
 {
-    List<List<GameObject>> storeditems;
-    List<GameObject> buttons;
+    [SerializeField]
+
+    //change list<gameobject> to inventory slot, unity cant handle that thing now
+    public List<List<GameObject>> storeditems;
+    public List<GameObject> buttons;
     playerStats pstats;
     GameObject chestUI;
     GameObject chestButton;
     private void Start()
     {
-        for(int x = 0; x <= 20; x++)
+        for (int x = 0; x <= 20; x++)
         {
-            storeditems.Add(new List<GameObject>());
+            List<GameObject> a = new List<GameObject>();
+
+            storeditems.Add(a);
         }
     }
 
@@ -25,6 +30,9 @@ public class chest : MonoBehaviour
         chestUI = pstats.chestUI;
         chestButton = chestUI.transform.Find("tempbutton").gameObject;
         int x = 0;
+        float xaxis = -230;
+        float yaxis = 140;
+        Debug.Log(storeditems);
         foreach (var item in storeditems)
         {
             GameObject newbutton = Instantiate(chestButton, chestUI.transform);
@@ -40,7 +48,13 @@ public class chest : MonoBehaviour
                 newbutton.GetComponent<Button>().onClick.AddListener(delegate { pickputItem(x); });
             }
             x++;
+            xaxis += 50;
+            if (x % 5 == 0)
+            {
+                yaxis -= 50;
+            }
         }
+        chestUI.active = true;
     }
 
 
@@ -55,6 +69,8 @@ public class chest : MonoBehaviour
                 tlist.AddRange(storeditems[id]);
             }
             storeditems[id] = pstats.tempitems;
+            buttons[id].GetComponent<Image>().sprite = pstats.tempitems[0].GetComponent<SpriteRenderer>().sprite;
+            buttons[id].GetComponent<Image>().color = pstats.tempitems[0].GetComponent<SpriteRenderer>().color;
             pstats.tempitems = tlist;
         }
         else

@@ -115,6 +115,11 @@ public class playerStats : MonoBehaviour
                     
                 }
 
+                if(hit.transform.gameObject.TryGetComponent<chest>(out chest chest))
+                {
+                    chest.openChest(gameObject);
+                }
+
 
                 if (hit.transform.gameObject.TryGetComponent<shoopKeeper>(out shoopKeeper shop))
                 {
