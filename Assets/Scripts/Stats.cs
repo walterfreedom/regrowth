@@ -113,7 +113,6 @@ public class Status:Stats
                 {
                     newtemp += (stats.ambtemp + tempsource) * stats.templist.Count;
                 }
-                Debug.Log(newtemp);
             }
 
             return true;

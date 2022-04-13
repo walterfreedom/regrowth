@@ -10,8 +10,8 @@ public class inventorySlot : MonoBehaviour
 
     private void Start()
     {
-        Button button = gameObject.GetComponent<Button>();
-        button.onClick.AddListener(dropItem);
+        //Button button = gameObject.GetComponent<Button>();
+        //button.onClick.AddListener(dropItem);
     }
 
     public void dropItem()
@@ -44,7 +44,7 @@ public class inventorySlot : MonoBehaviour
                     gameObject.transform.Find("item").GetComponent<Image>().color = Color.white;
                 }
             }
-    
+
         }
         else
         {
@@ -135,6 +135,27 @@ public class inventorySlot : MonoBehaviour
                 }
             }
         }
+    }
+    public bool additem(List<GameObject> items)
+    {
+        if (storedItems.Count == 0)
+        {
+            storedItems.AddRange(items);
+            transform.GetComponent<Image>().sprite = items[0].GetComponent<SpriteRenderer>().sprite;
+            transform.GetComponent<Image>().color = items[0].GetComponent<SpriteRenderer>().color;
+            return true;
+
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void clearSlot(){
+        transform.GetComponent<Image>().sprite = default;
+        transform.GetComponent<Image>().color = default;
+        storedItems.Clear();
     }
 }
 

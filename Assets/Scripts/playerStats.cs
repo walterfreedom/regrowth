@@ -30,10 +30,13 @@ public class playerStats : MonoBehaviour
     public GameObject chestUI;
 
     public List<GameObject> tempitems;
+    GameObject tempImage;
     bool inventoryMode;
+
 
     private void Start()
     {
+        tempImage = gameObject.transform.Find("Canvas").Find("TempImage").gameObject;
         craftingslot = gameObject.transform.Find("Canvas").Find("craftslot").gameObject;
         shopcanvas = gameObject.transform.Find("shopcanvas").gameObject;
         camera = gameObject.transform.Find("Main Camera").GetComponent<Camera>();
@@ -61,6 +64,7 @@ public class playerStats : MonoBehaviour
 
     private void Update()
     {
+        tempImage.transform.position = Input.mousePosition;
         if (Input.GetKeyDown(KeyCode.F))
         {
             //check if first inv slot is full from "inventory slot" script that you will create
@@ -317,9 +321,23 @@ public class playerStats : MonoBehaviour
 
     }
 
-    public void putItemInTempItem(List<GameObject> items)
+    public void templistClear()
     {
-
+        tempitems.Clear();
+        tempImage.active = false;
+    }
+    
+    public void templistAdd(List<GameObject> itemstoadd)
+    {
+        print(tempitems.Count);
+        if (tempitems.Count == 0)
+        {
+            tempitems.AddRange(itemstoadd);
+            tempImage.GetComponent<Image>().sprite = itemstoadd[0].GetComponent<SpriteRenderer>().sprite;
+            tempImage.GetComponent<Image>().color = itemstoadd[0].GetComponent<SpriteRenderer>().color;
+            tempImage.active = true;
+        }
+        
     }
 
     public void putItemInTempItem(GameObject item)

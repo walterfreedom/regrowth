@@ -6,53 +6,47 @@ using TMPro;
 
 public class chest : MonoBehaviour
 {
-    [SerializeField]
 
-    //change list<gameobject> to inventory slot, unity cant handle that thing now
-    public List<List<GameObject>> storeditems;
-    public List<GameObject> buttons;
+    public List<GameObject> storeditems;
     playerStats pstats;
     GameObject chestUI;
     GameObject chestButton;
     private void Start()
     {
-        for (int x = 0; x <= 20; x++)
-        {
-            List<GameObject> a = new List<GameObject>();
+        pstats = GameObject.Find("Player").GetComponent<playerStats>();
+        chestUI = pstats.chestUI;
+        chestButton = chestUI.transform.Find("tempbutton").gameObject;
 
-            storeditems.Add(a);
+        int x = 0;
+        float xaxis = 0;
+        float yaxis = 0;
+
+        for (int i = 0; i <= 20; i++)
+        {
+            GameObject button = Instantiate(chestButton,chestUI.transform);
+            int index = i;
+            //delegate only captures the latest i, because it gets called after the for loop ends.
+            button.GetComponent<Button>().onClick.AddListener(delegate { pickputItem(index); });
+            //inventory slot for data, will be upgraded to scriptableobject
+            button.AddComponent<inventorySlot>();
+            storeditems.Add(button);
+            button.transform.position += new Vector3(xaxis, yaxis,0);
+            x++;
+            xaxis += 100;
+            if (x % 5 == 0)
+            {
+                xaxis -= 500;
+                yaxis -= 100;
+            }
         }
     }
 
     public void openChest(GameObject Player)
     {
-        pstats = Player.GetComponent<playerStats>();
-        chestUI = pstats.chestUI;
-        chestButton = chestUI.transform.Find("tempbutton").gameObject;
-        int x = 0;
-        float xaxis = -230;
-        float yaxis = 140;
-        Debug.Log(storeditems);
         foreach (var item in storeditems)
         {
-            GameObject newbutton = Instantiate(chestButton, chestUI.transform);
-            buttons.Add(newbutton);
-            if (item.Count != 0)
-            {
-                newbutton.GetComponent<Image>().sprite = item[0].GetComponent<SpriteRenderer>().sprite;
-                newbutton.GetComponent<Image>().color = item[0].GetComponent<SpriteRenderer>().color;
-                newbutton.GetComponent<Button>().onClick.AddListener(delegate { pickputItem(x); });
-            }
-            else
-            {
-                newbutton.GetComponent<Button>().onClick.AddListener(delegate { pickputItem(x); });
-            }
-            x++;
-            xaxis += 50;
-            if (x % 5 == 0)
-            {
-                yaxis -= 50;
-            }
+            item.active = true;
+            
         }
         chestUI.active = true;
     }
@@ -63,26 +57,69 @@ public class chest : MonoBehaviour
     {
         if (pstats.tempitems.Count != 0)
         {
-            List<GameObject> tlist = new List<GameObject>();
-            if (storeditems[id].Count != 0)
+            
+            if (storeditems[id].GetComponent<inventorySlot>().storedItems.Count != 0)
             {
-                tlist.AddRange(storeditems[id]);
+                print("a");
+                List<GameObject> a = new List<GameObject>();
+                a.AddRange(storeditems[id].GetComponent<inventorySlot>().storedItems);
+                storeditems[id].GetComponent<inventorySlot>().clearSlot();
+                storeditems[id].GetComponent<inventorySlot>().additem(pstats.tempitems);
+                pstats.templistClear();
+                pstats.templistAdd(a);
             }
-            storeditems[id] = pstats.tempitems;
-            buttons[id].GetComponent<Image>().sprite = pstats.tempitems[0].GetComponent<SpriteRenderer>().sprite;
-            buttons[id].GetComponent<Image>().color = pstats.tempitems[0].GetComponent<SpriteRenderer>().color;
-            pstats.tempitems = tlist;
+            else
+            {
+                print("b");
+                storeditems[id].GetComponent<inventorySlot>().additem(pstats.tempitems);
+                pstats.templistClear();
+            }
         }
         else
         {
-            if (storeditems[id].Count != 0)
+            
+            if (storeditems[id].GetComponent<inventorySlot>().storedItems.Count != 0)
             {
-                pstats.putItemInTempItem(storeditems[id]);
-                storeditems[id].Clear();
-                buttons[id].GetComponent<Image>().sprite = default;
-                buttons[id].GetComponent<Image>().color = default;
+                print("c");
+                pstats.templistAdd(storeditems[id].GetComponent<inventorySlot>().storedItems);
+                storeditems[id].GetComponent<inventorySlot>().clearSlot();
             }
         }
-        
+
+        //print("walter");
+        //if (storeditems[id].GetComponent<inventorySlot>().storedItems.Count != 0)
+        //{
+        //    //newbutton.GetComponent<Image>().sprite = item.storedItems[0].GetComponent<SpriteRenderer>().sprite;
+        //    //newbutton.GetComponent<Image>().color = item.storedItems[0].GetComponent<SpriteRenderer>().color;
+        //    newbutton.GetComponent<Button>().onClick.AddListener(delegate { pickputItem(x); });
+        //}
+        //else
+        //{
+        //    newbutton.GetComponent<Button>().onClick.AddListener(delegate { pickputItem(x); });
+        //}
+
+        //    if (pstats.tempitems.Count != 0)
+        //    {
+        //        List<GameObject> tlist = new List<GameObject>();
+        //        if (storeditems[id].storedItems.Count != 0)
+        //        {
+        //            tlist.AddRange(storeditems[id].storedItems);
+        //        }
+        //        storeditems[id].storedItems = pstats.tempitems;
+        //        buttons[id].GetComponent<Image>().sprite = pstats.tempitems[0].GetComponent<SpriteRenderer>().sprite;
+        //        buttons[id].GetComponent<Image>().color = pstats.tempitems[0].GetComponent<SpriteRenderer>().color;
+        //        pstats.tempitems = tlist;
+        //    }
+        //    else
+        //    {
+        //        if (storeditems[id].storedItems.Count != 0)
+        //        {
+        //            pstats.putItemInTempItem(storeditems[id].storedItems);
+        //            storeditems[id].storedItems.Clear();
+        //            buttons[id].GetComponent<Image>().sprite = default;
+        //            buttons[id].GetComponent<Image>().color = default;
+        //        }
+        //    }
+
     }
 }
