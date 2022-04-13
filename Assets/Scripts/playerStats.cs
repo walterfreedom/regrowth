@@ -32,6 +32,7 @@ public class playerStats : MonoBehaviour
     public List<GameObject> tempitems;
     GameObject tempImage;
     bool inventoryMode;
+    chest lastchest;
 
 
     private void Start()
@@ -119,10 +120,17 @@ public class playerStats : MonoBehaviour
                     
                 }
 
-                if(hit.transform.gameObject.TryGetComponent<chest>(out chest chest))
+                if (chestUI.active)
                 {
-                    chest.openChest(gameObject);
+                    lastchest.closeChest();
+                    lastchest = null;
                 }
+                if (hit.transform.gameObject.TryGetComponent<chest>(out chest chest))
+                {
+                    chest.openChest();
+                    lastchest = chest;
+                }
+                
 
 
                 if (hit.transform.gameObject.TryGetComponent<shoopKeeper>(out shoopKeeper shop))
