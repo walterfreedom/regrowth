@@ -167,8 +167,22 @@ public class playerStats : MonoBehaviour
             }
 
         }
-       
         if (Input.GetKeyDown("i"))
+        {
+            if (!inventoryMode)
+            {
+                transform.Find("Canvas").Find("inventory").gameObject.active = true;
+                inventoryMode = true;
+            }
+            else
+            {
+                transform.Find("Canvas").Find("inventory").gameObject.active = false;
+                inventoryMode = false;
+            }
+           
+        }
+       
+        if (Input.GetKeyDown("c"))
         {
           
             if (craftingUI.active)
@@ -340,21 +354,7 @@ public class playerStats : MonoBehaviour
         
     }
 
-    public void putItemInTempItem(GameObject item)
-    {
-        if (tempitems.Count == 0)
-        {
-            tempitems.Add(item);
-        }
-        else if (tempitems[0].GetComponent<pickle>().itemname == item.GetComponent<pickle>().itemname)
-        {
-            tempitems.Add(item);
-        }
-        else
-        {
-           
-        }
-    }
+    
     void openShop()
     {
         shopcanvas.active = true;
