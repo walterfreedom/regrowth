@@ -12,6 +12,7 @@ public class inventorySlot : MonoBehaviour
     {
         //Button button = gameObject.GetComponent<Button>();
         //button.onClick.AddListener(dropItem);
+        storedItems = new List<GameObject>();
     }
 
     public void dropItem()
