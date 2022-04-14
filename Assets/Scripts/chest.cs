@@ -17,7 +17,7 @@ public class chest : MonoBehaviour
         pstats = GameObject.Find("Player").GetComponent<playerStats>();
         chestUI = pstats.chestUI;
        
-        for (int i = 0; i < 26; i++)
+        for (int i = 0; i < 27; i++)
         {
             storeditems.Add(new chestdata(new List<GameObject>()));   
         }
@@ -28,6 +28,8 @@ public class chest : MonoBehaviour
         //THATS VERY BUGGY FIX IT
         //IT MIGHT DUPLICATE ITEMS, AND IT ERASE IETMS YOU PUT IN IT
         //you left there ferret
+
+        //update: fixed it
         int x = 0;
         foreach (var item in storeditems)   
         {
@@ -35,9 +37,11 @@ public class chest : MonoBehaviour
             slot.GetComponent<inventorySlot>().clearSlot();
             if (item.data.Count != 0)
             {
+                
                 slot.GetComponent<inventorySlot>().additem(item.data);
             }
             
+
             x++;
             
         }
@@ -50,8 +54,12 @@ public class chest : MonoBehaviour
         foreach (var item in storeditems)
         {
             var slot = chestUI.transform.Find("Button (" + (x + 1) + ")");
-            
-            item.data = slot.GetComponent<inventorySlot>().storedItems;
+            if (slot.GetComponent<inventorySlot>().storedItems.Count != 0)
+                item.data = new List<GameObject>(slot.GetComponent<inventorySlot>().storedItems);
+            else
+            {
+                item.data = new List<GameObject>();
+            }
 
             x++;
 

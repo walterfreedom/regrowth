@@ -89,6 +89,7 @@ public class playerStats : MonoBehaviour
             else if (selectedslot.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().category == "weapon")
             {
                 //this will be attack script for player
+                
             }
             else
             {

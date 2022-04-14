@@ -84,7 +84,6 @@ public class inventorySlot : MonoBehaviour
 
             if (storedItems.Count != 0)
             {
-                print("a");
                 if (storedItems[0].GetComponent<pickle>().itemname== pstats.tempitems[0].GetComponent<pickle>().itemname)
                 {
                     if (storedItems[0].GetComponent<pickle>().stacksize >= pstats.tempitems.Count + storedItems.Count)
@@ -135,7 +134,6 @@ public class inventorySlot : MonoBehaviour
             }
             else
             {
-                print("b");
                 additem(pstats.tempitems);
                 pstats.templistClear();
             }
@@ -145,7 +143,6 @@ public class inventorySlot : MonoBehaviour
 
             if (storedItems.Count != 0)
             {
-                print("c");
                 pstats.templistAdd(storedItems);
                 clearSlot();
             }
