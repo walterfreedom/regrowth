@@ -46,6 +46,7 @@ public class AIstats : MonoBehaviour
         {
             if (isranged)
             {
+                print("ENEMY");
                 AIshootat(targetedobject);
             }
             else
