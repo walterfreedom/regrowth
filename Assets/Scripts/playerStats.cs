@@ -93,9 +93,9 @@ public class playerStats : MonoBehaviour
                 //this will be attack script for player
                 var mscript = gameObject.GetComponent<movement>();
                 var gun = selectedslot.GetComponent<inventorySlot>().storedItems[0];
-                gun.GetComponent<weaponstats>().shoot(stats.enemylist,gameObject,mscript.attackpoint.transform);
+                gun.GetComponent<weaponstats>().shoot(stats.enemylist,gameObject,mscript.gun.transform);
                
-                stats.attackset();
+                //stats.attackset();
 
             }
             //else
