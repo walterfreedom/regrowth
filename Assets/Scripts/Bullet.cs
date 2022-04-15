@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public List<string> Enemylist;
+    public List<string> Enemylist=new List<string>();
     public GameObject shooter;
+    public int damage;
     bool nothit = true;
     private void Start()
     {
@@ -31,7 +32,7 @@ public class Bullet : MonoBehaviour
                 {
                     nothit = false;
                     Debug.Log(collision.gameObject.GetComponent<AIstats>().health);
-                    collision.gameObject.GetComponent<AIstats>().DamageOrKill(shooter.GetComponent<AIstats>().damage, collision.gameObject, 5, shooter);
+                    collision.gameObject.GetComponent<AIstats>().DamageOrKill(damage, collision.gameObject, 5, shooter);
                     Destroy(gameObject);
                 }
             }

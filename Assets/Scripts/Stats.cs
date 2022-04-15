@@ -15,6 +15,8 @@ public class Stats : MonoBehaviour
     public int range;
     public List<Status> statuslist;
     public List<string> enemylist;
+    public bool canAttack = true;
+    public float attackspeed=1.0f;
 
     public int oxygen = 120;
     public int maxox = 120;
@@ -35,8 +37,8 @@ public class Stats : MonoBehaviour
             statuslist.Add(new Status("breath", -1, 1));
         if (tempsensitive)
             statuslist.Add(new Status("temp", -1, 1));
-            InvokeRepeating("statuscheck", 0, 1.0f);
-    
+        InvokeRepeating("statuscheck", 0, 1.0f);
+
     }
 
     void statuscheck()
@@ -46,6 +48,11 @@ public class Stats : MonoBehaviour
             status.applyEffect(status, gameObject.GetComponent<Stats>());
             //Debug.Log("statusname= " + status.stname);
         }
+    }
+
+   public void attackset(){
+        canAttack = !canAttack;
+        Invoke("attackset", attackspeed);
     }
 }
 

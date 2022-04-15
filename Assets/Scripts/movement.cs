@@ -11,6 +11,7 @@ public class movement : MonoBehaviour
     public GameObject attackpoint;
     bool isranged = true;
     public GameObject gun;
+    public Vector3 shootdirection;
 
 
     // Start is called before the first frame update
@@ -55,13 +56,16 @@ public class movement : MonoBehaviour
             
             Vector3 mousePosition = transform.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
             mousePosition.z = 0;
-            Vector3 shootdirection = (mousePosition - gameObject.transform.position).normalized;
-            if (transform.position.x - mousePosition.x > 0)
+            shootdirection = (mousePosition - gameObject.transform.position).normalized;
+            if (transform.position.x - mousePosition.x < 0)
             {
-                gun.GetComponent<SpriteRenderer>().flipY=true;
+
+                gun.GetComponent<SpriteRenderer>().flipY = false;
             }
             else{
-                gun.GetComponent<SpriteRenderer>().flipY = false;
+              
+               
+                gun.GetComponent<SpriteRenderer>().flipY = true;
             }
             float angle = Mathf.Atan2(shootdirection.x, shootdirection.y) * Mathf.Rad2Deg;
             attackpoint.transform.eulerAngles = new Vector3(0, 0, 90-angle);

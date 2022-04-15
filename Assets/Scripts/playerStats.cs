@@ -28,6 +28,7 @@ public class playerStats : MonoBehaviour
     public GameObject craftingUI;
     private GameObject craftingslot;
     public GameObject chestUI;
+    Stats stats;
 
     public List<GameObject> tempitems;
     GameObject tempImage;
@@ -45,6 +46,7 @@ public class playerStats : MonoBehaviour
         sellmode = gameObject.transform.Find("shopcanvas").Find("sellmode").GetComponent<Button>();
         moneytext = gameObject.transform.Find("Canvas").Find("money").GetComponent<TMP_Text>();
         oxygencanvas = gameObject.transform.Find("Canvas").Find("oxygen").gameObject;
+        stats = gameObject.GetComponent<Stats>();
 
         sellmode.onClick.AddListener(setSellmode);
 
@@ -86,17 +88,22 @@ public class playerStats : MonoBehaviour
                 selectedslot.GetComponent<inventorySlot>().dropItem();
                   Destroy(a);
             }
-            else if (selectedslot.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().category == "weapon")
+            else if (selectedslot.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().category == "weapon"&&stats.canAttack)
             {
                 //this will be attack script for player
-                
+                var mscript = gameObject.GetComponent<movement>();
+                var gun = selectedslot.GetComponent<inventorySlot>().storedItems[0];
+                gun.GetComponent<weaponstats>().shoot(stats.enemylist,gameObject,mscript.attackpoint.transform);
+               
+                stats.attackset();
+
             }
-            else
-            {
-                Vector3 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
-                mousePosition.z = 0;
-                selectedslot.GetComponent<inventorySlot>().dropItem(mousePosition);
-            }
+            //else
+            //{
+            //    Vector3 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
+            //    mousePosition.z = 0;
+            //    selectedslot.GetComponent<inventorySlot>().dropItem(mousePosition);
+            //}
             
         }
         if (Input.GetKeyDown("e"))
@@ -232,62 +239,44 @@ public class playerStats : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            selectedslot.GetComponent<Image>().color = Color.white; ;
-            selectedslot = inventory[0];
-            selectedslot.GetComponent<Image>().color = Color.cyan;
+            chooseSlot(0);
             
         }
         if (Input.GetKey(KeyCode.Alpha2))
         {
-            selectedslot.GetComponent<Image>().color = Color.white;
-            selectedslot = inventory[1];
-            selectedslot.GetComponent<Image>().color = Color.cyan;
+            chooseSlot(1);
         }
         if (Input.GetKey(KeyCode.Alpha3))
         {
-            selectedslot.GetComponent<Image>().color = Color.white; ;
-            selectedslot = inventory[2];
-            selectedslot.GetComponent<Image>().color = Color.cyan;
+            chooseSlot(2);
         }
         if (Input.GetKey(KeyCode.Alpha4))
         {
-            selectedslot.GetComponent<Image>().color = Color.white; ;
-            selectedslot = inventory[3];
-            selectedslot.GetComponent<Image>().color = Color.cyan;
+            chooseSlot(3);
         }
         if (Input.GetKey(KeyCode.Alpha5))
         {
-            selectedslot.GetComponent<Image>().color = Color.white; 
-            selectedslot = inventory[4];
-            selectedslot.GetComponent<Image>().color = Color.cyan;
+            chooseSlot(4);
         }
 
         if (Input.GetKey(KeyCode.Alpha6))
         {
-            selectedslot.GetComponent<Image>().color = Color.white;
-            selectedslot = inventory[5];
-            selectedslot.GetComponent<Image>().color = Color.cyan;
+            chooseSlot(5);
         }
 
         if (Input.GetKey(KeyCode.Alpha7))
         {
-            selectedslot.GetComponent<Image>().color = Color.white;
-            selectedslot = inventory[6];
-            selectedslot.GetComponent<Image>().color = Color.cyan;
+            chooseSlot(6);
         }
 
         if (Input.GetKey(KeyCode.Alpha8))
         {
-            selectedslot.GetComponent<Image>().color = Color.white;
-            selectedslot = inventory[7];
-            selectedslot.GetComponent<Image>().color = Color.cyan;
+            chooseSlot(7);
         }
 
         if (Input.GetKey(KeyCode.Alpha9))
         {
-            selectedslot.GetComponent<Image>().color = Color.white;
-            selectedslot = inventory[8];
-            selectedslot.GetComponent<Image>().color = Color.cyan;
+            chooseSlot(8);
         }
         if (Input.GetAxis("Mouse ScrollWheel") > 0f) 
         {
@@ -295,16 +284,12 @@ public class playerStats : MonoBehaviour
             if (inventory.IndexOf(a) + 1 <=8)
             {
                 int newslot = inventory.IndexOf(a) + 1;
-                selectedslot.GetComponent<Image>().color = Color.white;
-                selectedslot = inventory[newslot];
-                selectedslot.GetComponent<Image>().color = Color.cyan;
+                chooseSlot(newslot);
             }
             else
             {
                 int newslot = 0;
-                selectedslot.GetComponent<Image>().color = Color.white;
-                selectedslot = inventory[newslot];
-                selectedslot.GetComponent<Image>().color = Color.cyan;
+                chooseSlot(newslot);
             }
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0f) 
@@ -313,15 +298,11 @@ public class playerStats : MonoBehaviour
             if(inventory.IndexOf(a) - 1 >= 0)
             {
                 int newslot = inventory.IndexOf(a) - 1;
-                selectedslot.GetComponent<Image>().color = Color.white;
-                selectedslot = inventory[newslot];
-                selectedslot.GetComponent<Image>().color = Color.cyan;
+                chooseSlot(newslot);
             }
             else{
                 int newslot = 8;
-                selectedslot.GetComponent<Image>().color = Color.white;
-                selectedslot = inventory[newslot];
-                selectedslot.GetComponent<Image>().color = Color.cyan;
+                chooseSlot(newslot);
             }
             
         }
@@ -350,6 +331,27 @@ public class playerStats : MonoBehaviour
         tempImage.active = false;
     }
     
+    void chooseSlot(int index)
+    {
+        selectedslot.GetComponent<Image>().color = Color.white;
+        selectedslot = inventory[index];
+        selectedslot.GetComponent<Image>().color = Color.cyan;
+        var storeditm = selectedslot.GetComponent<inventorySlot>().storedItems;
+        if (storeditm.Count != 0)
+        {
+            if (storeditm[0].GetComponent<pickle>().category == "weapon")
+            {
+                gameObject.GetComponent<movement>().gun.GetComponent<SpriteRenderer>().sprite =
+               storeditm[0].GetComponent<SpriteRenderer>().sprite;
+                gameObject.GetComponent<movement>().gun.GetComponent<SpriteRenderer>().flipX = true;
+                stats.damage = storeditm[0].GetComponent<weaponstats>().damage;
+            }
+        }
+
+        else {
+            gameObject.GetComponent<movement>().gun.GetComponent<SpriteRenderer>().sprite = null;
+        }
+    }
     public void templistAdd(List<GameObject> itemstoadd)
     {
         print(tempitems.Count);
