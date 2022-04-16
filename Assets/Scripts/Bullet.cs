@@ -31,7 +31,6 @@ public class Bullet : MonoBehaviour
                 if (nothit)
                 {
                     nothit = false;
-                    Debug.Log(collision.gameObject.GetComponent<AIstats>().health);
                     collision.gameObject.GetComponent<AIstats>().DamageOrKill(damage, collision.gameObject, 5, shooter);
                     Destroy(gameObject);
                 }

@@ -29,7 +29,13 @@ public class Stats : MonoBehaviour
     public List<float> templist;
 
     public bool needsair = true;
+    public bool airprotected = false;
     public bool tempsensitive = true;
+
+    public GameObject helmet;
+    public GameObject body;
+    public GameObject feet;
+
     private void Start()
     {
         templist.Add(0);
@@ -53,6 +59,17 @@ public class Stats : MonoBehaviour
    public void attackset(){
         canAttack = !canAttack;
         Invoke("attackset", attackspeed);
+    }
+
+    public void equipHelmet(GameObject helmet)
+    {
+        
+    }
+
+    public void unEquipHelmet()
+
+    {
+
     }
 }
 
@@ -101,6 +118,37 @@ public class Status:Stats
                         stats.oxygen = stats.maxox;
                     }
                 }
+
+                else if (stats.helmet != null)
+                {
+
+                    if (stats.helmet.TryGetComponent<pickle>(out pickle pickle))
+                    {
+                        print("WORKED");
+                        if (pickle.itemperks != null)
+                        {
+                            if (stats.oxygen + 1 < stats.maxox)
+                            {
+                                stats.oxygen += 1;
+
+                            }
+                            else
+                            {
+                                stats.oxygen = stats.maxox;
+
+                            }
+                            stats.helmet.GetComponent<pickle>().damageItem(1);
+                        }
+
+                    }
+
+
+                    else
+                    {
+                        stats.oxygen--;
+                    }
+
+                }
                 else
                 {
 
@@ -111,9 +159,10 @@ public class Status:Stats
                     var pstats = stats.gameObject.GetComponent<playerStats>();
                     pstats.updateoxygen(stats.oxygen);
                 }
+            
 
             }
-            if(status.stname== "temp")
+            if (status.stname== "temp")
             {
                 var newtemp=0.0f;
                 foreach(float tempsource in stats.templist)

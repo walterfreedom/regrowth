@@ -10,7 +10,6 @@ public class airQuality : MonoBehaviour
         {
             stats.breathable = false;
         }
-        print("aaaa");
     }
     private void OnTriggerExit2D(Collider2D collision)
     {

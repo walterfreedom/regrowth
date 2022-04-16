@@ -113,7 +113,7 @@ public class AIstats : MonoBehaviour
             //decrease health by damage
             ItemToDealDamage.GetComponent<AIstats>().health -= damage;
             Vector2 knockbackDirection = new Vector2(ItemToDealDamage.transform.position.x-attacker.transform.position.x, ItemToDealDamage.transform.position.y - attacker.transform.position.y).normalized;
-            ItemToDealDamage.GetComponent<Rigidbody2D>().AddForce(knockback*knockbackDirection*100);
+            //ItemToDealDamage.GetComponent<Rigidbody2D>().AddForce(knockback*knockbackDirection*100);
             ItemToDealDamage.TryGetComponent<AImovement>(out AImovement aImovement);
 
             StatusEffect a = new StatusEffect(3,1,"stun");
