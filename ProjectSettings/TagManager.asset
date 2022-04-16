@@ -9,6 +9,7 @@ TagManager:
   - Rebel
   - Mutant
   - Resistance
+  - Message
   layers:
   - Default
   - TransparentFX

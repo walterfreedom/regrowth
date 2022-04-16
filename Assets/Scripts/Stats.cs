@@ -9,6 +9,7 @@ public class Stats : MonoBehaviour
     public string race;
 
     public int health;
+    public int maxhealth;
     public int damage;
     public float speed;
     public float basespeed;
