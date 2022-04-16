@@ -72,19 +72,21 @@ public class AImovement : MonoBehaviour
     {
         checkOwner();
         #region statuseffect
-        if (statuslist.Count != 0)
-        {
-            foreach (StatusEffect status in statuslist)
-            {
 
-                bool willLoop = status.applyEffect(status, this);
-                if (!willLoop)
-                {
-                    statuslist.Remove(status);
-                }
+        //Legacy code.moved to Stats.cs
+        //if (statuslist.Count != 0)
+        //{
+        //    foreach (StatusEffect status in statuslist)
+        //    {
 
-            }
-        }
+        //        bool willLoop = status.applyEffect(status, this);
+        //        if (!willLoop)
+        //        {
+        //            statuslist.Remove(status);
+        //        }
+
+        //    }
+        //}
         #endregion
         #region animator
         if (!simpleanimation)

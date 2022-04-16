@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NPCobject: {fileID: 0}
-  range: 5
+  range: 10
   baseSpeed: 5
   speed: 0
   AIPath: {fileID: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
   isFollowingPlayer: 0
   wandering: 0
   followdistance: 1
-  combatDistance: 5
+  combatDistance: 7
 --- !u!114 &1803492509572757327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +219,7 @@ MonoBehaviour:
   helmet: {fileID: 0}
   body: {fileID: 0}
   feet: {fileID: 0}
+  whattodrop: {fileID: 0}
 --- !u!212 &1803492509572757320
 SpriteRenderer:
   m_ObjectHideFlags: 0

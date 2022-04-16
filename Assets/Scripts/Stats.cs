@@ -13,7 +13,7 @@ public class Stats : MonoBehaviour
     public float speed;
     public float basespeed;
     public int range;
-    public List<Status> statuslist;
+    public List<Status> statuslist = new List<Status>();
     public List<string> enemylist;
     public bool canAttack = true;
     public float attackspeed=1.0f;
@@ -36,8 +36,18 @@ public class Stats : MonoBehaviour
     public GameObject body;
     public GameObject feet;
 
+    public GameObject whattodrop;
+    bool usedefault = false;
+    int goldvalue = 50;
+
     private void Start()
     {
+        if (whattodrop == null)
+        {
+            whattodrop = GameObject.Find("coin");
+            usedefault = true;
+        }
+
         templist.Add(0);
         if (needsair)
             statuslist.Add(new Status("breath", -1, 1));
@@ -71,9 +81,41 @@ public class Stats : MonoBehaviour
     {
         helmet = null;
     }
+
+    public void DamageOrKill(int damage, GameObject ItemToDealDamage, float knockback, GameObject attacker)
+    {
+        //if health wont drop to or below zero after attack
+        if (health - damage > 0)
+        {
+            //decrease health by damage
+            health -= damage;
+            Vector2 knockbackDirection = new Vector2(ItemToDealDamage.transform.position.x - attacker.transform.position.x, ItemToDealDamage.transform.position.y - attacker.transform.position.y).normalized;
+            //ItemToDealDamage.GetComponent<Rigidbody2D>().AddForce(knockback*knockbackDirection*100);
+           
+
+            Status a = new Status("stun",1,1);
+            statuslist.Add(a);
+
+
+        }
+        else
+        {
+            droploot(gameObject.transform.position);
+            Destroy(ItemToDealDamage.gameObject);
+        }
+    }
+
+    void droploot(Vector2 position)
+    {
+        var drop = Instantiate(whattodrop, position, gameObject.transform.rotation);
+        if (usedefault)
+        {
+            drop.GetComponent<coinScript>().value = goldvalue;
+        }
+    }
 }
 
-public class Status:Stats
+public class Status
 {
     public string stname;
     float duration;

@@ -27,7 +27,7 @@ public class AIstats : MonoBehaviour
     private void Start()
     {
         owner = gameObject;
-        NPC = this.transform.gameObject;
+        NPC =gameObject;
         if (whattodrop == null)
         {
             whattodrop = GameObject.Find("coin");
@@ -81,7 +81,6 @@ public class AIstats : MonoBehaviour
                 if (NPC.GetComponent<AImovement>().Enemylist.Contains(hit.transform.tag))
                 {
                     dealdamage(hit.transform.gameObject);
-                    Debug.Log("attacked");
                     break;
                 }
             }
@@ -101,31 +100,31 @@ public class AIstats : MonoBehaviour
 
     private void dealdamage(GameObject item)
     {
-        item.TryGetComponent<AIstats>(out AIstats health);
-            health.DamageOrKill(damage, item, 3, NPC);         
+        item.TryGetComponent<Stats>(out Stats health);
+        health.DamageOrKill(damage, item, 3, NPC);
     }
 
-    public void DamageOrKill(int damage, GameObject ItemToDealDamage, float knockback, GameObject attacker)
-    {
-        //if health wont drop to or below zero after attack
-        if (health - damage > 0)
-        {
-            //decrease health by damage
-            ItemToDealDamage.GetComponent<AIstats>().health -= damage;
-            Vector2 knockbackDirection = new Vector2(ItemToDealDamage.transform.position.x-attacker.transform.position.x, ItemToDealDamage.transform.position.y - attacker.transform.position.y).normalized;
-            //ItemToDealDamage.GetComponent<Rigidbody2D>().AddForce(knockback*knockbackDirection*100);
-            ItemToDealDamage.TryGetComponent<AImovement>(out AImovement aImovement);
+    //public void DamageOrKill(int damage, GameObject ItemToDealDamage, float knockback, GameObject attacker)
+    //{
+    //    //if health wont drop to or below zero after attack
+    //    if (health - damage > 0)
+    //    {
+    //        //decrease health by damage
+    //        ItemToDealDamage.GetComponent<AIstats>().health -= damage;
+    //        Vector2 knockbackDirection = new Vector2(ItemToDealDamage.transform.position.x-attacker.transform.position.x, ItemToDealDamage.transform.position.y - attacker.transform.position.y).normalized;
+    //        //ItemToDealDamage.GetComponent<Rigidbody2D>().AddForce(knockback*knockbackDirection*100);
+    //        ItemToDealDamage.TryGetComponent<Stats>(out Stats stats);
 
-            StatusEffect a = new StatusEffect(3,1,"stun");
-            aImovement.statuslist.Add(a);
-           
-            
-        }
-        else
-        {
-            droploot(gameObject.transform.position);
-            Destroy(ItemToDealDamage.gameObject);
-        }
-    } 
+    //        StatusEffect a = new StatusEffect(3,1,"stun");
+    //        ;
+
+
+    //    }
+    //    else
+    //    {
+    //        droploot(gameObject.transform.position);
+    //        Destroy(ItemToDealDamage.gameObject);
+    //    }
+    //} 
     //hello :3
 }
