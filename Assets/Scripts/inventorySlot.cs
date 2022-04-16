@@ -8,7 +8,8 @@ public class inventorySlot : MonoBehaviour
 {
     public List<GameObject> storedItems;
     public playerStats pstats;
-
+    public string inventoryType = "storage";
+        
     private void Start()
     {
         pstats = GameObject.Find("Player").GetComponent<playerStats>();
@@ -257,13 +258,19 @@ public class inventorySlot : MonoBehaviour
             transform.Find("item").GetComponent<Image>().color = items[0].GetComponent<SpriteRenderer>().color;
             transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = storedItems.Count.ToString();
 
-
+            //Todo
+            //if (inventoryType=="helmet")
+            //{
+                
+            //}
         }
         else
         {
             storedItems.AddRange(items);
             transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = storedItems.Count.ToString();
         }
+
+
     }
 
     public void clearSlot(){

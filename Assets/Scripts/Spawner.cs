@@ -18,7 +18,8 @@ public class Spawner : MonoBehaviour
     private void Start()
     {
         daycounter = GameObject.Find("day");
-        shopQueue = GameObject.Find("shop1").GetComponent<shopQueue>();
+
+        InvokeRepeating("spawncustomer", 0, 1.0f);
     }
   
     public void nextday()
@@ -36,14 +37,8 @@ public class Spawner : MonoBehaviour
     }
     void spawncustomer()
     {
-        if (isday)
-        {
-            if (shopQueue.customers.Count < 5 && waveamount > 0)
-            {
-                shopQueue.customers.Add(Instantiate(customer));
-                waveamount -= 1;
-            }   
-        }
+        
+        Instantiate(customer,transform.position,transform.rotation);
     }
     public void servedCustomerCheck()
     {

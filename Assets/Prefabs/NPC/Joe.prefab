@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 1803492509572757320}
   - component: {fileID: 1803492509572757323}
   - component: {fileID: 5958123300367050503}
+  - component: {fileID: 3160121308773481342}
   m_Layer: 0
   m_Name: Joe
   m_TagString: Untagged
@@ -213,7 +214,11 @@ MonoBehaviour:
   ambtemp: 0
   templist: []
   needsair: 1
+  airprotected: 0
   tempsensitive: 1
+  helmet: {fileID: 0}
+  body: {fileID: 0}
+  feet: {fileID: 0}
 --- !u!212 &1803492509572757320
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -254,7 +259,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 45cc5c0b824ac0b45b709a5b84042fed, type: 3}
+  m_Sprite: {fileID: -2050557890407119498, guid: 3ada9e13823c5ca45a179bf866c149ab, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -282,7 +287,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1.3125}
+    oldSize: {x: 0.875, y: 1}
     newSize: {x: 1, y: 1.3125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -303,3 +308,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af33787b2298af045955693898f2b131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &3160121308773481342
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803492509572757360}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 43817b2d161114d4fbd0401a714e162d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -61,15 +61,15 @@ public class Stats : MonoBehaviour
         Invoke("attackset", attackspeed);
     }
 
-    public void equipHelmet(GameObject helmet)
+    public void equipHelmet(GameObject helmettoequip)
     {
-        
+        helmet = helmettoequip;
     }
 
     public void unEquipHelmet()
 
     {
-
+        helmet = null;
     }
 }
 
@@ -124,7 +124,7 @@ public class Status:Stats
 
                     if (stats.helmet.TryGetComponent<pickle>(out pickle pickle))
                     {
-                        print("WORKED");
+                        
                         if (pickle.itemperks != null)
                         {
                             if (stats.oxygen + 1 < stats.maxox)

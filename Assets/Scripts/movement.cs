@@ -36,7 +36,7 @@ public class movement : MonoBehaviour
             float inputY = Input.GetAxis("Vertical");
 
 
-        animator.SetFloat("Speed", Mathf.Abs(inputY) / 2 + Mathf.Abs(inputX) / 2);
+       animator.SetFloat("Speed", Mathf.Abs(inputY)  + Mathf.Abs(inputX) );
         if (Mathf.Abs(inputY) + Mathf.Abs(inputX) > 0.01f)
         {
             animator.SetFloat("LastHorizontal", inputX);
