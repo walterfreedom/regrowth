@@ -200,7 +200,7 @@ public class Status
                 if (stats.gameObject.tag == "Player")
                 {
                     var pstats = stats.gameObject.GetComponent<playerStats>();
-                    pstats.updateoxygen(stats.oxygen);
+                    pstats.updateoxygen(((float)stats.oxygen/(float)stats.maxox)*100.0f);
                 }
             
 
