@@ -112,7 +112,8 @@ public class playerStats : MonoBehaviour
             RaycastHit2D[] hits = Physics2D.RaycastAll(gameObject.transform.position, mousePosition - gameObject.transform.position, 2);
             var stats = player.GetComponent<playerStats>();
             foreach (var hit in hits)
-            {            
+            {   
+                
                 if (hit.transform.gameObject.TryGetComponent<pickle>(out pickle pickle1))
                 {
                     if (pickle1.infiniteitemspawn)
@@ -126,6 +127,11 @@ public class playerStats : MonoBehaviour
                         gameObject.GetComponent<playerStats>().addtoinventory(hit.transform.gameObject);
                     }
                     
+                }
+
+                else if(hit.transform.gameObject.TryGetComponent<UpgradeMatic>(out UpgradeMatic upgrade))
+                {
+                    upgrade.enableCanvas();
                 }
 
                 if (chestUI.active)

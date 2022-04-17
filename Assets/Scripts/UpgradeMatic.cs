@@ -6,11 +6,12 @@ public class UpgradeMatic : MonoBehaviour
 {
     public GameObject robot;
     GameObject player;
+    GameObject canvas;
 
     private void Start()
     {
         player = GameObject.Find("Player");
-        
+        canvas = transform.Find("Canvas").gameObject;
         
     }
 
@@ -40,6 +41,12 @@ public class UpgradeMatic : MonoBehaviour
         {
             player.GetComponent<playerStats>().money -= 50;
             player.GetComponent<playerStats>().updateMoney();
+            robot.GetComponent<Stats>().attackspeed += 0.1f;
         }
+    }
+
+    public void enableCanvas()
+    {
+        canvas.SetActive(!canvas.activeSelf);
     }
 }
