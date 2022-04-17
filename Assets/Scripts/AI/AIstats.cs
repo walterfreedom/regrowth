@@ -24,9 +24,11 @@ public class AIstats : MonoBehaviour
     public bool hasenemyinrange = false;
     public GameObject targetedobject;
     public GameObject healthbar;
+    Transform anchor;
 
     private void Start()
     {
+        anchor = gameObject.transform.Find("anchor");
         owner = gameObject;
         NPC =gameObject;
         if (whattodrop == null)
@@ -57,7 +59,7 @@ public class AIstats : MonoBehaviour
             }
         }
         
-        healthbar.transform.position = Camera.main.WorldToScreenPoint(transform.position);
+        healthbar.transform.position = Camera.main.WorldToScreenPoint(anchor.position);
     }
     public void AIshootat(GameObject enemy)
     {

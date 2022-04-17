@@ -46,6 +46,7 @@ public class Stats : MonoBehaviour
 
     private void Start()
     {
+     
         healthbar = transform.Find("Canvas").Find("healthbar").gameObject;
         if (whattodrop == null)
         {
@@ -128,6 +129,8 @@ public class Stats : MonoBehaviour
         if (health + str < maxhealth)
         {
             health += str;
+            var bar = healthbar.transform.Find("bar");
+            bar.GetComponent<Slider>().value = ((float)health / (float)maxhealth) * 100.0f;
         }
         else
         {
