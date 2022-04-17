@@ -45,7 +45,7 @@ public class playerStats : MonoBehaviour
         player = gameObject;
         sellmode = gameObject.transform.Find("shopcanvas").Find("sellmode").GetComponent<Button>();
         moneytext = gameObject.transform.Find("Canvas").Find("money").GetComponent<TMP_Text>();
-        oxygencanvas = gameObject.transform.Find("Canvas").Find("energybar").Find("border").gameObject;
+        oxygencanvas = gameObject.transform.Find("Canvas").Find("energybar").Find("bar").gameObject;
         stats = gameObject.GetComponent<Stats>();
 
         sellmode.onClick.AddListener(setSellmode);
@@ -383,7 +383,6 @@ public class playerStats : MonoBehaviour
     public void updateoxygen(float updatedoxygen)
     {
         oxygencanvas.GetComponent<Slider>().value= updatedoxygen;
-        print(updatedoxygen);
     }
 
     #endregion

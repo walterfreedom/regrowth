@@ -23,6 +23,7 @@ public class AIstats : MonoBehaviour
     int goldvalue = 50;
     public bool hasenemyinrange = false;
     public GameObject targetedobject;
+    public GameObject healthbar;
 
     private void Start()
     {
@@ -33,6 +34,7 @@ public class AIstats : MonoBehaviour
             whattodrop = GameObject.Find("coin");
             usedefault = true;
         }
+        healthbar = transform.Find("Canvas").Find("healthbar").gameObject;
     }
 
 
@@ -46,7 +48,7 @@ public class AIstats : MonoBehaviour
         {
             if (isranged)
             {
-                print("ENEMY");
+                
                 AIshootat(targetedobject);
             }
             else
@@ -54,6 +56,8 @@ public class AIstats : MonoBehaviour
                 MeleeAttack();
             }
         }
+        
+        healthbar.transform.position = Camera.main.WorldToScreenPoint(transform.position);
     }
     public void AIshootat(GameObject enemy)
     {

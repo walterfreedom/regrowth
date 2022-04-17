@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Stats : MonoBehaviour
 {
@@ -41,8 +42,11 @@ public class Stats : MonoBehaviour
     bool usedefault = false;
     int goldvalue = 50;
 
+    GameObject healthbar;
+
     private void Start()
     {
+        healthbar = transform.Find("Canvas").Find("healthbar").gameObject;
         if (whattodrop == null)
         {
             whattodrop = GameObject.Find("coin");
@@ -54,9 +58,11 @@ public class Stats : MonoBehaviour
             statuslist.Add(new Status("breath", -1, 1));
         if (tempsensitive)
             statuslist.Add(new Status("temp", -1, 1));
+        statuslist.Add(new Status("regen", -1, 1));
         InvokeRepeating("statuscheck", 0, 1.0f);
 
     }
+    
 
     void statuscheck()
     {
@@ -96,7 +102,9 @@ public class Stats : MonoBehaviour
 
             Status a = new Status("stun",1,1);
             statuslist.Add(a);
-
+            var bar = healthbar.transform.Find("bar");
+                healthbar.gameObject.active = true;
+            bar.GetComponent<Slider>().value = ((float)health / (float)maxhealth) * 100.0f;
 
         }
         else
@@ -112,6 +120,20 @@ public class Stats : MonoBehaviour
         if (usedefault)
         {
             drop.GetComponent<coinScript>().value = goldvalue;
+        }
+    }
+
+    public void heal(int str)
+    {
+        if (health + str < maxhealth)
+        {
+            health += str;
+        }
+        else
+        {
+            health = maxhealth;
+            if(gameObject.tag!="Player")
+            healthbar.active = false;
         }
     }
 }
@@ -212,6 +234,11 @@ public class Status
                 {
                     newtemp += (stats.ambtemp + tempsource) * stats.templist.Count;
                 }
+            }
+
+            if (status.stname == "regen")
+            {
+                stats.heal(status.strength);
             }
 
             return true;
