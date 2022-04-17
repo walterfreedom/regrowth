@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UpgradeMatic : MonoBehaviour
 {
     public GameObject robot;
     GameObject player;
     GameObject canvas;
+    GameObject healthtext;
+    GameObject dmgtext;
+    GameObject astext;
 
     private void Start()
     {

@@ -36,6 +36,9 @@ public class playerStats : MonoBehaviour
     chest lastchest;
 
 
+    public Sprite selected;
+    public Sprite defaultspr;
+
     private void Start()
     {
         tempImage = gameObject.transform.Find("Canvas").Find("TempImage").gameObject;
@@ -70,14 +73,11 @@ public class playerStats : MonoBehaviour
         tempImage.transform.position = Input.mousePosition;
         if (Input.GetKeyDown(KeyCode.F))
         {
-            //check if first inv slot is full from "inventory slot" script that you will create
-            //if its not put the gameobject into it like slot.item=gameobject and set object to deactive
-            //when you click on slot you drop the item? 
-
-            Vector2 mousePosition = Input.mousePosition;
-            RaycastHit2D[] hits = Physics2D.RaycastAll(this.transform.position, mousePosition, 2);
-            var stats = player.GetComponent<playerStats>();
-            
+            var AIcontrol = GameObject.Find("AIcontrol");
+            AIcontrol.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            followerList[0].GetComponent<AImovement>().followerCommand = true;
+            followerList[0].GetComponent<AImovement>().aIDestination.target = AIcontrol.transform;
+            followerList[0].GetComponent<AImovement>().AIPath.endReachedDistance = 0;
         }
         if (Input.GetMouseButtonDown(0)&&!isShopping&&selectedslot.GetComponent<inventorySlot>().storedItems.Count!=0)
         {
@@ -219,21 +219,24 @@ public class playerStats : MonoBehaviour
             else
             {
                 inventoryMode = true;
-                float x = 0;
+                
                 float y = 200;
                 foreach(blueprint bp in crafting)
                 {
-                   
+                    
                     var newcraft= Instantiate(craftingslot, craftingUI.transform);
                     var material = newcraft.transform.Find("recipe");
+                    float x = material.transform.position.x;
                     newcraft.transform.Find("output").gameObject.GetComponent<Image>().sprite=bp.output[0].GetComponent<SpriteRenderer>().sprite;
                     newcraft.transform.Find("output").gameObject.GetComponent<Image>().color = bp.output[0].GetComponent<SpriteRenderer>().color;
                     foreach (var ingredient in bp.materials)
                     {
                         
                         GameObject recipebox = Instantiate(material,newcraft.transform).gameObject;
+                        recipebox.transform.position = new Vector2(newcraft.transform.position.x+x,newcraft.transform.position.y);
                         recipebox.GetComponent<Image>().sprite = ingredient.GetComponent<SpriteRenderer>().sprite;
                         recipebox.GetComponent<Image>().color = ingredient.GetComponent<SpriteRenderer>().color;
+                        x += 100;
                     }
                     newcraft.active = true;
                     newcraft.transform.position =new Vector2(newcraft.transform.position.x,craftingUI.transform.position.y+y);
@@ -339,9 +342,9 @@ public class playerStats : MonoBehaviour
     
     void chooseSlot(int index)
     {
-        selectedslot.GetComponent<Image>().color = Color.white;
+        selectedslot.GetComponent<Image>().sprite = defaultspr;
         selectedslot = inventory[index];
-        selectedslot.GetComponent<Image>().color = Color.cyan;
+        selectedslot.GetComponent<Image>().sprite= selected;
         var storeditm = selectedslot.GetComponent<inventorySlot>().storedItems;
         if (storeditm.Count != 0)
         {

@@ -30,12 +30,13 @@ public class AImovement : MonoBehaviour
     public int combatDistance = 5;
     SpriteRenderer renderer;
     AIqueue AIqueue;
-    IAstarAI astarAI;
+    public IAstarAI astarAI;
     bool simpleanimation = true;
 
     private List<Vector2> AIdailyPlan;
     private float randomwander=5;
     private float lastmovetime;
+    public bool followerCommand=false;
 
   
     private void Start()
@@ -136,6 +137,13 @@ public class AImovement : MonoBehaviour
                 lastmovetime = Time.time;
             }
                          
+        }
+        else if (followerCommand)
+        {
+
+
+            if (astarAI.reachedEndOfPath)
+                followerCommand = false;
         }
         else
         {
