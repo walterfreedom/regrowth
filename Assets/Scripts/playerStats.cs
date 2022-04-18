@@ -381,8 +381,7 @@ public class playerStats : MonoBehaviour
     
     void openShop()
     {
-        shopcanvas.active = true;
-        isShopping = true;
+        shopcanvas.SetActive(!shopcanvas.activeSelf);
     }
     public void increaseScore(int scoreincrease)
     {
