@@ -30,7 +30,12 @@ public class Stats : MonoBehaviour
     public float ambtemp = 0.0f;
     public List<float> templist;
 
+    public int energy = 120;
+    public int maxenergy = 120;
+    public bool charging = true;
+
     public bool needsair = true;
+    public bool userenergy = false;
     public bool airprotected = false;
     public bool tempsensitive = true;
 
@@ -59,6 +64,8 @@ public class Stats : MonoBehaviour
             statuslist.Add(new Status("breath", -1, 1));
         if (tempsensitive)
             statuslist.Add(new Status("temp", -1, 1));
+        if (userenergy)
+            statuslist.Add(new Status("energy", -1, 1));
         statuslist.Add(new Status("regen", -1, 1));
         InvokeRepeating("statuscheck", 0, 1.0f);
 
@@ -229,6 +236,32 @@ public class Status
                 }
             
 
+            }
+
+            if (status.stname == "energy")
+            {
+                if (stats.charging)
+                {
+
+                    if (stats.energy + 10 < stats.maxenergy)
+                    {
+                        stats.energy += 10;
+                    }
+                    else
+                    {
+                        stats.energy = stats.maxenergy;
+                    }
+                }
+                else
+                {
+                    stats.energy -= 1;
+                }
+
+                if (stats.gameObject.tag == "Player")
+                {
+                    var pstats = stats.gameObject.GetComponent<playerStats>();
+                    pstats.updateoxygen(((float)stats.energy / (float)stats.maxenergy) * 100.0f);
+                }
             }
             if (status.stname== "temp")
             {

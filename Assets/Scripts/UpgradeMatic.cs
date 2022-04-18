@@ -19,38 +19,47 @@ public class UpgradeMatic : MonoBehaviour
         
     }
 
-    public void increaseDamage()
-    {
-        if (player.GetComponent<playerStats>().money - 50 > 0)
-        {
-            player.GetComponent<playerStats>().money -= 50;
-            player.GetComponent<playerStats>().updateMoney();
-
-            robot.GetComponent<Stats>().maxhealth+=5;
-            robot.GetComponent<Stats>().health += 5;
-        }
-    }
     public void increaseHP()
     {
-        if (player.GetComponent<playerStats>().money - 50 > 0)
+        if (player.GetComponent<playerStats>().money - 200 >= 0)
         {
-            player.GetComponent<playerStats>().money -= 50;
+            player.GetComponent<playerStats>().money -= 200;
             player.GetComponent<playerStats>().updateMoney();
-            robot.GetComponent<Stats>().damage += 5;
+
+            robot.GetComponent<Stats>().maxhealth+=10;
+            robot.GetComponent<Stats>().health += 10;
+            
+            canvas.transform.Find("Health").GetComponent<TMP_Text>().text = "Can: "+robot.GetComponent<Stats>().maxhealth.ToString();
+        }
+    }
+    public void increaseDamage()
+    {
+        if (player.GetComponent<playerStats>().money - 200 >= 0)
+        {
+            player.GetComponent<playerStats>().money -= 200;
+            player.GetComponent<playerStats>().updateMoney();
+            robot.GetComponent<Stats>().damage += 1;
+            canvas.transform.Find("Damage").GetComponent<TMP_Text>().text = "Hasar: "+robot.GetComponent<Stats>().damage.ToString();
+
         }
     }
     public void increaseAS()
     {
-        if (player.GetComponent<playerStats>().money - 50 > 0)
+        if (player.GetComponent<playerStats>().money - 200>= 0)
         {
-            player.GetComponent<playerStats>().money -= 50;
+            player.GetComponent<playerStats>().money -= 200;
             player.GetComponent<playerStats>().updateMoney();
             robot.GetComponent<Stats>().attackspeed += 0.1f;
+            canvas.transform.Find("Attack Speed").GetComponent<TMP_Text>().text = "Saldiri Hizi: "+robot.GetComponent<Stats>().attackspeed.ToString();
         }
     }
 
     public void enableCanvas()
     {
+        robot = GameObject.Find("Player").GetComponent<playerStats>().followerList[0];
         canvas.SetActive(!canvas.activeSelf);
+        canvas.transform.Find("Attack Speed").GetComponent<TMP_Text>().text = "Saldiri Hizi: " + robot.GetComponent<Stats>().attackspeed.ToString();
+        canvas.transform.Find("Damage").GetComponent<TMP_Text>().text = "Hasar: " + robot.GetComponent<Stats>().damage.ToString();
+        canvas.transform.Find("Health").GetComponent<TMP_Text>().text = "Can: " + robot.GetComponent<Stats>().maxhealth.ToString();
     }
 }

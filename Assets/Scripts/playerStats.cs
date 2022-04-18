@@ -145,6 +145,10 @@ public class playerStats : MonoBehaviour
                     lastchest = chest;
                 }
                 
+                if(hit.transform.TryGetComponent<upgradeBase>(out upgradeBase upgradeBase))
+                {
+                    upgradeBase.canvasToggle();
+                }
 
 
                 if (hit.transform.gameObject.TryGetComponent<shoopKeeper>(out shoopKeeper shop))
