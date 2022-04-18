@@ -210,45 +210,7 @@ public class playerStats : MonoBehaviour
        
         if (Input.GetKeyDown("c"))
         {
-          
-            if (craftingUI.active)
-            {
-                craftingUI.active = false;
-                foreach(Transform child in craftingUI.transform)
-                {
-                    Destroy(child.gameObject);
-                }
-                inventoryMode = false;
-            }
-            else
-            {
-                inventoryMode = true;
-                
-                float y = 200;
-                foreach(blueprint bp in crafting)
-                {
-                    
-                    var newcraft= Instantiate(craftingslot, craftingUI.transform);
-                    var material = newcraft.transform.Find("recipe");
-                    float x = material.transform.position.x;
-                    newcraft.transform.Find("output").gameObject.GetComponent<Image>().sprite=bp.output[0].GetComponent<SpriteRenderer>().sprite;
-                    newcraft.transform.Find("output").gameObject.GetComponent<Image>().color = bp.output[0].GetComponent<SpriteRenderer>().color;
-                    foreach (var ingredient in bp.materials)
-                    {
-                        
-                        GameObject recipebox = Instantiate(material,newcraft.transform).gameObject;
-                        recipebox.transform.position = new Vector2(newcraft.transform.position.x+x,newcraft.transform.position.y);
-                        recipebox.GetComponent<Image>().sprite = ingredient.GetComponent<SpriteRenderer>().sprite;
-                        recipebox.GetComponent<Image>().color = ingredient.GetComponent<SpriteRenderer>().color;
-                        x += 100;
-                    }
-                    newcraft.active = true;
-                    newcraft.transform.position =new Vector2(newcraft.transform.position.x,craftingUI.transform.position.y+y);
-                    newcraft.transform.Find("craftbutton").GetComponent<craftButton>().bp = bp;
-                    y -= 50;
-                }
-                craftingUI.active = true;
-            }
+            craftingToggle();
         }
         if (Input.GetKey(KeyCode.Alpha1))
         {
@@ -338,6 +300,50 @@ public class playerStats : MonoBehaviour
 
     }
 
+    public void craftingToggle()
+    {
+        if (craftingUI.active)
+        {
+            craftingUI.active = false;
+            foreach (Transform child in craftingUI.transform)
+            {
+                if(child.name!="closopen")
+                Destroy(child.gameObject);
+            }
+            inventoryMode = false;
+        }
+        else
+        {
+            inventoryMode = true;
+
+            float y = 200;
+            foreach (blueprint bp in crafting)
+            {
+
+                var newcraft = Instantiate(craftingslot, craftingUI.transform);
+                var material = newcraft.transform.Find("recipeslot");
+                material.gameObject.SetActive(false);
+                float x = -750;
+                newcraft.transform.Find("outputslot").Find("output").gameObject.GetComponent<Image>().sprite = bp.output[0].GetComponent<SpriteRenderer>().sprite;
+                newcraft.transform.Find("outputslot").Find("output").gameObject.GetComponent<Image>().color = bp.output[0].GetComponent<SpriteRenderer>().color;
+                foreach (var ingredient in bp.materials)
+                {
+
+                    GameObject recipebox = Instantiate(material, newcraft.transform).gameObject;
+                    recipebox.transform.position = new Vector2(newcraft.transform.position.x + x, newcraft.transform.position.y);
+                    recipebox.transform.Find("recipe").GetComponent<Image>().sprite = ingredient.GetComponent<SpriteRenderer>().sprite;
+                    recipebox.transform.Find("recipe").GetComponent<Image>().color = ingredient.GetComponent<SpriteRenderer>().color;
+                    recipebox.SetActive(true);
+                    x += 150;
+                }
+                newcraft.active = true;
+                newcraft.transform.position = new Vector2(newcraft.transform.position.x, craftingUI.transform.position.y + y);
+                newcraft.transform.Find("craftbutton").GetComponent<craftButton>().bp = bp;
+                y -= 50;
+            }
+            craftingUI.active = true;
+        }
+    }
     public void templistClear()
     {
         tempitems.Clear();

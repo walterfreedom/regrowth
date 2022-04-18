@@ -46,6 +46,7 @@ public class chest : MonoBehaviour
             
         }
         chestUI.active = true;
+        chestUI.transform.Find("closebutton").GetComponent<Button>().onClick.AddListener(closeChest);
     }
 
     public void closeChest()

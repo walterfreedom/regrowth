@@ -37,6 +37,7 @@ public class upgradeBase : MonoBehaviour
            
             var newlevel = Instantiate(levels[currentlevel - 1], spawnloc.transform);
             newlevel.name = "spawn";
+            checkupgrade();
 
         }
     }
