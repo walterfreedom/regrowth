@@ -92,7 +92,7 @@ public class AImovement : MonoBehaviour
         #region animator
         if (!simpleanimation)
         {
-            //animator.SetFloat("Speed", Mathf.Abs(NPCobject.transform.position.y - lastPosition.y) + Mathf.Abs(NPCobject.transform.position.x - lastPosition.x));
+            animator.SetFloat("Speed", Mathf.Abs(NPCobject.transform.position.y - lastPosition.y) + Mathf.Abs(NPCobject.transform.position.x - lastPosition.x));
             if (Mathf.Abs(NPCobject.transform.position.y - lastPosition.y) + Mathf.Abs(NPCobject.transform.position.x - lastPosition.x) > 0.01f)
             {
                 animator.SetFloat("Horizontal", NPCobject.transform.position.x - lastPosition.x);
@@ -144,6 +144,10 @@ public class AImovement : MonoBehaviour
 
             if (astarAI.reachedEndOfPath)
                 followerCommand = false;
+        }
+        else if (isFollowingPlayer)
+        {
+            aIDestination.target = owner.transform;
         }
         else
         {

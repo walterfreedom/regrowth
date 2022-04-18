@@ -270,12 +270,12 @@ public class inventorySlot : MonoBehaviour
             transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = storedItems.Count.ToString();
         }
 
-
+        
     }
 
     public void clearSlot(){
         transform.Find("item").GetComponent<Image>().sprite = null;
-        transform.Find("item").GetComponent<Image>().color = Color.white;
+        transform.Find("item").GetComponent<Image>().color = Color.clear;
         transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = "";
         storedItems.Clear();
     }

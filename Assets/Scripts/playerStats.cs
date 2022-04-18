@@ -87,6 +87,7 @@ public class playerStats : MonoBehaviour
                 var a = selectedslot.GetComponent<inventorySlot>().storedItems[0];
                 selectedslot.GetComponent<inventorySlot>().dropItem();
                   Destroy(a);
+                selectedslot.GetComponent<inventorySlot>().clearSlot();
             }
             else if (selectedslot.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().category == "weapon"&&stats.canAttack)
             {
@@ -105,6 +106,17 @@ public class playerStats : MonoBehaviour
             //    selectedslot.GetComponent<inventorySlot>().dropItem(mousePosition);
             //}
             
+        }
+        if (Input.GetKeyDown("g"))
+        {
+            if (followerList.Count > 0)
+            {
+                foreach(var follower in followerList)
+                {
+                    follower.GetComponent<AImovement>().isFollowingPlayer = !follower.GetComponent<AImovement>().isFollowingPlayer;
+                    follower.GetComponent<AImovement>().owner = gameObject;
+                }
+            }
         }
         if (Input.GetKeyDown("e"))
         {
@@ -169,8 +181,8 @@ public class playerStats : MonoBehaviour
                         stufftodestory.Add(shopping.gameObject);
                         shopping.name = "shopbutton" + itemorder;
                         shopping.gameObject.active = true;
-                        shopping.Find("Image").GetComponent<Image>().sprite = item.GetComponent<SpriteRenderer>().sprite;
-                        shopping.Find("Image").GetComponent<Image>().color = item.GetComponent<SpriteRenderer>().color;
+                        shopping.Find("Img").GetComponent<Image>().sprite = item.GetComponent<SpriteRenderer>().sprite;
+                        shopping.Find("Img").GetComponent<Image>().color = item.GetComponent<SpriteRenderer>().color;
                         shopping.Find("Text (TMP)").GetComponent<TMP_Text>().text = item.GetComponent<pickle>().name;
                         shopping.GetComponent<shopscript>().storedItems.Add(item);
                         shopping.transform.localPosition = new Vector2(x, y);

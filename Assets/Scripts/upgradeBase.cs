@@ -14,12 +14,20 @@ public class upgradeBase : MonoBehaviour
     public void checkupgrade()
     {
         slot = gameObject.transform.Find("Canvas").Find("upslot").gameObject;
-
-        if (slot.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().itemname == upgradername && levels.Count >= currentlevel + 1)
+        if (slot.GetComponent<inventorySlot>().storedItems.Count != 0)
         {
-            gameObject.transform.Find("Canvas").Find("upbutton").GetComponent<Image>().color = Color.green;
-            gameObject.transform.Find("Canvas").Find("upbutton").GetComponent<Button>().interactable = true;
+            if (slot.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().itemname == upgradername && levels.Count >= currentlevel + 1)
+            {
+                gameObject.transform.Find("Canvas").Find("upbutton").GetComponent<Image>().color = Color.green;
+                gameObject.transform.Find("Canvas").Find("upbutton").GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                gameObject.transform.Find("Canvas").Find("upbutton").GetComponent<Image>().color = Color.red;
+                gameObject.transform.Find("Canvas").Find("upbutton").GetComponent<Button>().interactable = false;
+            }
         }
+        
         else
         {
             gameObject.transform.Find("Canvas").Find("upbutton").GetComponent<Image>().color = Color.red;
@@ -37,7 +45,7 @@ public class upgradeBase : MonoBehaviour
            
             var newlevel = Instantiate(levels[currentlevel - 1], spawnloc.transform);
             newlevel.name = "spawn";
-            checkupgrade();
+            Invoke("checkupgrade",0.2f);
 
         }
     }
