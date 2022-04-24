@@ -38,7 +38,6 @@ public class AImovement : MonoBehaviour
     private float lastmovetime;
     public bool followerCommand=false;
 
-  
     private void Start()
     {
         aIDestination = gameObject.GetComponent<AIDestinationSetter>();

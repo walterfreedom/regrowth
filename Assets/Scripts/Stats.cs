@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class Stats : MonoBehaviour
 {
+    public string id="";
     public string name;
     public string faction;
     public string race;
+    public GameObject prefab;
 
     public int health;
     public int maxhealth;
@@ -16,7 +18,7 @@ public class Stats : MonoBehaviour
     public float basespeed;
     public int range;
     public List<Status> statuslist = new List<Status>();
-    public List<string> enemylist;
+    public List<string> enemylist = new List<string>();
     public bool canAttack = true;
     public float attackspeed=1.0f;
 
@@ -49,9 +51,13 @@ public class Stats : MonoBehaviour
 
     GameObject healthbar;
 
+    private void GenerateID() => id = System.Guid.NewGuid().ToString();
     private void Start()
     {
-     
+        if (id == "")
+            id = System.Guid.NewGuid().ToString();
+
+        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables.Add(id,gameObject);
         healthbar = transform.Find("Canvas").Find("healthbar").gameObject;
         if (whattodrop == null)
         {
@@ -68,9 +74,13 @@ public class Stats : MonoBehaviour
             statuslist.Add(new Status("energy", -1, 1));
         statuslist.Add(new Status("regen", -1, 1));
         InvokeRepeating("statuscheck", 0, 1.0f);
+       
+    }
+    private void OnDestroy()
+    {
+        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables.Remove(id);
 
     }
-    
 
     void statuscheck()
     {
@@ -146,8 +156,48 @@ public class Stats : MonoBehaviour
             healthbar.active = false;
         }
     }
+
+    public SaveData createSaveData()
+    {
+        SaveData data = new SaveData(this);
+        return data;
+    }
+
+    public void loadData(SaveData data)
+    {
+        id = data.id;
+        health = data.health;
+        transform.position = new Vector3(data.position[0], data.position[1], data.position[2]);
+    }
 }
 
+[System.Serializable]
+public class SaveData
+{
+    
+    public int health;
+    public string id;
+    public float[] position = new float[3];
+    public bool useoxy;
+    public bool useen;
+    public bool usetemp;
+    public List<string> enemylist = new List<string>();
+    public string prefabname;
+    public SaveData(Stats stats)
+    {
+        health = stats.health;
+        id = stats.id;
+        position[0] = stats.transform.position.x;
+        position[1] = stats.transform.position.y;
+        position[2] = stats.transform.position.z;
+        useoxy = stats.needsair;
+        useen = stats.userenergy;
+        usetemp = stats.tempsensitive;
+        enemylist.Clear();
+        enemylist.AddRange(stats.enemylist);
+        prefabname = stats.prefab.name;
+    }
+}
 public class Status
 {
     public string stname;

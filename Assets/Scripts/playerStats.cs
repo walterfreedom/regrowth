@@ -87,7 +87,7 @@ public class playerStats : MonoBehaviour
                 var a = selectedslot.GetComponent<inventorySlot>().storedItems[0];
                 selectedslot.GetComponent<inventorySlot>().dropItem();
                   Destroy(a);
-                selectedslot.GetComponent<inventorySlot>().clearSlot();
+                selectedslot.GetComponent<inventorySlot>().clearSlot(); 
             }
             else if (selectedslot.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().category == "weapon"&&stats.canAttack)
             {
