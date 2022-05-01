@@ -9,7 +9,7 @@ public class Stats : MonoBehaviour
     public string name;
     public string faction;
     public string race;
-    public GameObject prefab;
+    
 
     public int health;
     public int maxhealth;
@@ -52,10 +52,14 @@ public class Stats : MonoBehaviour
     GameObject healthbar;
 
     private void GenerateID() => id = System.Guid.NewGuid().ToString();
-    private void Start()
+    private void Awake()
     {
-        if (id == "")
+        if (id == ""&&gameObject.tag!="Player")
             id = System.Guid.NewGuid().ToString();
+        else
+        {
+            id=  "playerGaming";
+        }
 
         GameObject.Find("Astarpath").GetComponent<savesystem>().saveables.Add(id,gameObject);
         healthbar = transform.Find("Canvas").Find("healthbar").gameObject;
@@ -81,7 +85,6 @@ public class Stats : MonoBehaviour
         GameObject.Find("Astarpath").GetComponent<savesystem>().saveables.Remove(id);
 
     }
-
     void statuscheck()
     {
         foreach (Status status in statuslist)
@@ -195,7 +198,7 @@ public class SaveData
         usetemp = stats.tempsensitive;
         enemylist.Clear();
         enemylist.AddRange(stats.enemylist);
-        prefabname = stats.prefab.name;
+        prefabname = stats.name;
     }
 }
 public class Status

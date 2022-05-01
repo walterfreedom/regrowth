@@ -11,9 +11,11 @@ public class chest : MonoBehaviour
     playerStats pstats;
     GameObject chestUI;
     GameObject chestButton;
-    private void Start()
+    public string chestID = "";
+    private void Awake()
     {
-        
+        if(chestID=="")
+            chestID= System.Guid.NewGuid().ToString();
         pstats = GameObject.Find("Player").GetComponent<playerStats>();
         chestUI = pstats.chestUI;
        
@@ -30,15 +32,17 @@ public class chest : MonoBehaviour
         //you left there ferret
 
         //update: fixed it
-        int x = 0;
+        int x = 1;
         foreach (var item in storeditems)   
         {
-            var slot=chestUI.transform.Find("Button (" + (x + 1)+ ")");
+            print(chestUI.name);
+            var slot=chestUI.transform.Find("Button (" +x+ ")");
             slot.GetComponent<inventorySlot>().clearSlot();
             if (item.data.Count != 0)
             {
                 
                 slot.GetComponent<inventorySlot>().additem(item.data);
+                slot.GetComponent<inventorySlot>().ownerID = chestID;
             }
             
 
@@ -143,9 +147,20 @@ public class chest : MonoBehaviour
 
 public class chestdata
 {
+
+    //why do I have this class?
     public List<GameObject> data;
     public chestdata(List<GameObject> data1)
     {
         data = data1;
+    }
+}
+
+public class savechestID
+{
+    string cID;
+    public savechestID(chest chest)
+    {
+        cID = chest.chestID;
     }
 }

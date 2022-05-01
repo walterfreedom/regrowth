@@ -31,7 +31,7 @@ public class playerStats : MonoBehaviour
     Stats stats;
 
     public List<GameObject> tempitems;
-    GameObject tempImage;
+    public GameObject tempImage;
     bool inventoryMode;
     chest lastchest;
 
@@ -39,7 +39,10 @@ public class playerStats : MonoBehaviour
     public Sprite selected;
     public Sprite defaultspr;
 
-    private void Start()
+    //ITEM E SHOULD CALL PICKPUTITEM()
+    //PALYER ID RESETS
+
+    private void Awake()
     {
         tempImage = gameObject.transform.Find("Canvas").Find("TempImage").gameObject;
         craftingslot = gameObject.transform.Find("Canvas").Find("craftslot").gameObject;
@@ -50,17 +53,23 @@ public class playerStats : MonoBehaviour
         moneytext = gameObject.transform.Find("Canvas").Find("money").GetComponent<TMP_Text>();
         oxygencanvas = gameObject.transform.Find("Canvas").Find("energybar").Find("bar").gameObject;
         stats = gameObject.GetComponent<Stats>();
-
         sellmode.onClick.AddListener(setSellmode);
 
         updateMoney();
         //get inventory slots 
         var canvas = transform.Find("Canvas");
-        var a =canvas.GetComponentInChildren<Transform>();
+        var a =canvas.transform.GetComponentInChildren<Transform>();
         foreach(Transform child in a)
         {
             //look at child of child
             if (child.gameObject.tag == "InventorySlot")
+            {
+                inventory.Add(child.gameObject);
+            }
+        }
+        foreach(Transform child in canvas.Find("inventory").GetComponentInChildren<Transform>())
+        {
+            if (child.tag == "InventorySlot")
             {
                 inventory.Add(child.gameObject);
             }
@@ -117,6 +126,15 @@ public class playerStats : MonoBehaviour
                     follower.GetComponent<AImovement>().owner = gameObject;
                 }
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            GameObject.Find("Astarpath").GetComponent<savesystem>().SaveGameObjects();
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            GameObject.Find("Astarpath").GetComponent<savesystem>().loadGameObjects();
         }
         if (Input.GetKeyDown("e"))
         {
@@ -437,7 +455,13 @@ public class playerStats : MonoBehaviour
     {
         
     }
-
+    public void clearInventory()
+    {
+        foreach(var inventoryItem in inventory)
+        {
+            inventoryItem.GetComponent<inventorySlot>().clearSlot();
+        }
+    }
     public void addtoinventory(GameObject itemtoadd)
     {
         bool foundslot = false;
@@ -450,12 +474,14 @@ public class playerStats : MonoBehaviour
             {
                 if (storeditems[0].GetComponent<pickle>().name == pickle1.name && storeditems.Count < pickle1.stacksize)
                 {
-                    item.GetComponent<inventorySlot>().storedItems.Add(itemtoadd);
-                    item.transform.Find("item").GetComponent<Image>().sprite = itemtoadd.GetComponent<SpriteRenderer>().sprite;
-                    item.transform.Find("item").GetComponent<Image>().color = itemtoadd.GetComponent<SpriteRenderer>().color;
-                    var itemcount = item.transform.Find("Text (TMP)");
-                    int previousnum = int.Parse(itemcount.gameObject.GetComponent<TMP_Text>().text);
-                    itemcount.gameObject.GetComponent<TMP_Text>().text = (previousnum + 1).ToString();
+                    List<GameObject> itemstoadd = new List<GameObject>();
+                    itemstoadd.Add(itemtoadd);
+                    item.GetComponent<inventorySlot>().additem(itemstoadd);
+                    //item.transform.Find("item").GetComponent<Image>().sprite = itemtoadd.GetComponent<SpriteRenderer>().sprite;
+                    //item.transform.Find("item").GetComponent<Image>().color = itemtoadd.GetComponent<SpriteRenderer>().color;
+                    //var itemcount = item.transform.Find("Text (TMP)");
+                    //int previousnum = int.Parse(itemcount.gameObject.GetComponent<TMP_Text>().text);
+                    //itemcount.gameObject.GetComponent<TMP_Text>().text = (previousnum + 1).ToString();
 
                     itemtoadd.active = false;
                     foundslot = true;
@@ -473,22 +499,28 @@ public class playerStats : MonoBehaviour
                 {
                     if (pickle1.infiniteitemspawn)
                     {
-                        item.GetComponent<inventorySlot>().storedItems.Add(itemtoadd);
-                        item.transform.Find("item").GetComponent<Image>().sprite = itemtoadd.GetComponent<SpriteRenderer>().sprite;
-                        item.transform.Find("item").GetComponent<Image>().color = itemtoadd.GetComponent<SpriteRenderer>().color;
-                        var itemcount = item.transform.Find("Text (TMP)");
-                        itemcount.gameObject.GetComponent<TMP_Text>().text = 1.ToString();
+                        List<GameObject> itemstoadd = new List<GameObject>();
+                        itemstoadd.Add(itemtoadd);
+                        item.GetComponent<inventorySlot>().additem(itemstoadd);
+                        //item.GetComponent<inventorySlot>().storedItems.Add(itemtoadd);
+                        //item.transform.Find("item").GetComponent<Image>().sprite = itemtoadd.GetComponent<SpriteRenderer>().sprite;
+                        //item.transform.Find("item").GetComponent<Image>().color = itemtoadd.GetComponent<SpriteRenderer>().color;
+                        //var itemcount = item.transform.Find("Text (TMP)");
+                        //itemcount.gameObject.GetComponent<TMP_Text>().text = 1.ToString();
                         itemtoadd.active = false;
                         foundslot = true;
                         break;
                     }
                     else
                     {
-                        item.GetComponent<inventorySlot>().storedItems.Add(itemtoadd);
-                        item.transform.Find("item").GetComponent<Image>().sprite = itemtoadd.GetComponent<SpriteRenderer>().sprite;
-                        item.transform.Find("item").GetComponent<Image>().color = itemtoadd.GetComponent<SpriteRenderer>().color;
-                        var itemcount = item.transform.Find("Text (TMP)");
-                        itemcount.gameObject.GetComponent<TMP_Text>().text = 1.ToString();
+                        List<GameObject> itemstoadd = new List<GameObject>();
+                    itemstoadd.Add(itemtoadd);
+                    item.GetComponent<inventorySlot>().additem(itemstoadd);
+                        //item.GetComponent<inventorySlot>().storedItems.Add(itemtoadd);
+                        //item.transform.Find("item").GetComponent<Image>().sprite = itemtoadd.GetComponent<SpriteRenderer>().sprite;
+                        //item.transform.Find("item").GetComponent<Image>().color = itemtoadd.GetComponent<SpriteRenderer>().color;
+                        //var itemcount = item.transform.Find("Text (TMP)");
+                        //itemcount.gameObject.GetComponent<TMP_Text>().text = 1.ToString();
                         itemtoadd.active = false;
                         foundslot = true;
                         break;

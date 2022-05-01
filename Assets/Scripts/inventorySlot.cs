@@ -9,10 +9,15 @@ public class inventorySlot : MonoBehaviour
     public List<GameObject> storedItems;
     public playerStats pstats;
     public string inventoryType = "storage";
-        
-    private void Start()
+    public string ownerID;
+
+    void Awake()
     {
         pstats = GameObject.Find("Player").GetComponent<playerStats>();
+
+        //if (gameObject.tag == "InventorySlot")
+            
+
         //Button button = gameObject.GetComponent<Button>();
         //button.onClick.AddListener(dropItem);
         storedItems = new List<GameObject>();
@@ -251,12 +256,14 @@ public class inventorySlot : MonoBehaviour
     }
     public void additem(List<GameObject> items)
     {
+        ownerID = pstats.gameObject.GetComponent<Stats>().id;
         if (storedItems.Count == 0)
         {
             storedItems.AddRange(items);
             transform.Find("item").GetComponent<Image>().sprite = items[0].GetComponent<SpriteRenderer>().sprite;
             transform.Find("item").GetComponent<Image>().color = items[0].GetComponent<SpriteRenderer>().color;
             transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = storedItems.Count.ToString();
+            
 
             //Todo
             //if (inventoryType=="helmet")
@@ -270,6 +277,12 @@ public class inventorySlot : MonoBehaviour
             transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = storedItems.Count.ToString();
         }
 
+        foreach(var item in items)
+        {
+            item.GetComponent<pickle>().ownerID = ownerID;
+            item.GetComponent<pickle>().slotindex = pstats.inventory.FindIndex(o => o == gameObject);
+            
+        }
         
     }
 
