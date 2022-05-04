@@ -8,48 +8,69 @@ public class chest : MonoBehaviour
 {
 
     public List<chestdata> storeditems=new List<chestdata>();
+    public List<GameObject> storeditems2 = new List<GameObject>();
     playerStats pstats;
     GameObject chestUI;
     GameObject chestButton;
-    public string chestID = "";
+    public int chestItemCount;
+    public string chestID = "a";
     private void Awake()
     {
-        if(chestID=="")
-            chestID= System.Guid.NewGuid().ToString();
+        StartCoroutine(startroutine());
+    }
+
+    IEnumerator startroutine()
+    {
+        yield return new WaitForEndOfFrame();
+        if (gameObject.TryGetComponent<Stats>(out Stats stats))
+        {
+            chestID = stats.id;
+        }
+        else if (chestID == "a")
+        {
+            chestID = System.Guid.NewGuid().ToString();
+        }
+
         pstats = GameObject.Find("Player").GetComponent<playerStats>();
         chestUI = pstats.chestUI;
-       
+
         for (int i = 0; i < 27; i++)
         {
-            storeditems.Add(new chestdata(new List<GameObject>()));   
+            storeditems.Add(new chestdata(new List<GameObject>()));
         }
+        yield return new WaitForEndOfFrame();
     }
+    
 
     public void openChest()
     {
+        chestUI.active = true;
         //THATS VERY BUGGY FIX IT
         //IT MIGHT DUPLICATE ITEMS, AND IT ERASE IETMS YOU PUT IN IT
         //you left there ferret
 
         //update: fixed it
         int x = 1;
+        chestItemCount = 0;
         foreach (var item in storeditems)   
         {
-            print(chestUI.name);
             var slot=chestUI.transform.Find("Button (" +x+ ")");
+            slot.GetComponent<inventorySlot>().ownerID = chestID;
+            slot.GetComponent<inventorySlot>().slotindex = x - 1;
             slot.GetComponent<inventorySlot>().clearSlot();
             if (item.data.Count != 0)
             {
-                
+                print("AAA:"+slot.GetComponent<inventorySlot>().storedItems.Count);
+                print(slot.GetComponent<inventorySlot>().slotindex);
                 slot.GetComponent<inventorySlot>().additem(item.data);
-                slot.GetComponent<inventorySlot>().ownerID = chestID;
+                chestItemCount++;
             }
-            
 
+           
             x++;
             
         }
-        chestUI.active = true;
+        
         chestUI.transform.Find("closebutton").GetComponent<Button>().onClick.AddListener(closeChest);
     }
 

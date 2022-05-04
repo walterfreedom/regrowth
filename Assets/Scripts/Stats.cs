@@ -32,7 +32,7 @@ public class Stats : MonoBehaviour
     public float ambtemp = 0.0f;
     public List<float> templist;
 
-    public int energy = 120;
+    public float energy = 120;
     public int maxenergy = 120;
     public bool charging = true;
 
@@ -52,15 +52,19 @@ public class Stats : MonoBehaviour
     GameObject healthbar;
 
     private void GenerateID() => id = System.Guid.NewGuid().ToString();
+    
     private void Awake()
     {
-        if (id == ""&&gameObject.tag!="Player")
+        
+        if (id == "" && gameObject.tag != "Player")
             id = System.Guid.NewGuid().ToString();
         else
         {
-            id=  "playerGaming";
+            id = "playerGaming";
         }
 
+        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables2.Add(gameObject);
+        GameObject.Find("Astarpath").GetComponent<savesystem>().ids.Add(id);
         GameObject.Find("Astarpath").GetComponent<savesystem>().saveables.Add(id,gameObject);
         healthbar = transform.Find("Canvas").Find("healthbar").gameObject;
         if (whattodrop == null)
@@ -78,12 +82,41 @@ public class Stats : MonoBehaviour
             statuslist.Add(new Status("energy", -1, 1));
         statuslist.Add(new Status("regen", -1, 1));
         InvokeRepeating("statuscheck", 0, 1.0f);
-       
+    }
+
+    IEnumerator awakerout()
+    {
+        yield return new WaitForEndOfFrame();
+        if (id == "" && gameObject.tag != "Player")
+            id = System.Guid.NewGuid().ToString();
+        else
+        {
+            id = "playerGaming";
+        }
+
+        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables2.Add(gameObject);
+        GameObject.Find("Astarpath").GetComponent<savesystem>().ids.Add(id);
+        healthbar = transform.Find("Canvas").Find("healthbar").gameObject;
+        if (whattodrop == null)
+        {
+            whattodrop = GameObject.Find("coin");
+            usedefault = true;
+        }
+
+        templist.Add(0);
+        if (needsair)
+            statuslist.Add(new Status("breath", -1, 1));
+        if (tempsensitive)
+            statuslist.Add(new Status("temp", -1, 1));
+        if (userenergy)
+            statuslist.Add(new Status("energy", -1, 1));
+        statuslist.Add(new Status("regen", -1, 1));
+        InvokeRepeating("statuscheck", 0, 1.0f);
     }
     private void OnDestroy()
     {
-        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables.Remove(id);
-
+        GameObject.Find("Astarpath").GetComponent<savesystem>().ids.Remove(id);
+        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables2.Remove(gameObject);
     }
     void statuscheck()
     {
@@ -168,9 +201,12 @@ public class Stats : MonoBehaviour
 
     public void loadData(SaveData data)
     {
-        id = data.id;
+      
         health = data.health;
         transform.position = new Vector3(data.position[0], data.position[1], data.position[2]);
+        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables.Remove(id);
+        id = data.id;
+        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables.Add(id,gameObject);
     }
 }
 

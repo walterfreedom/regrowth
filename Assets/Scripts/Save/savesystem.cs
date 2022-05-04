@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,12 +8,13 @@ using UnityEngine;
 public class savesystem: MonoBehaviour
 {
     public Dictionary<string, GameObject> saveables = new Dictionary<string, GameObject>();
-    //public List<GameObject> saveables=new List<GameObject>();
+    public List<GameObject> saveables2=new List<GameObject>();
+    public List<string> ids = new List<string>();
     private List<SaveData> savedata = new List<SaveData>();
     private List<picklesave> itemdata = new List<picklesave>();
     public List<GameObject> addprefabs;
     public Dictionary<string,GameObject> prefabs = new Dictionary<string, GameObject>();
-    string path;
+    string path; 
     private void Start()
     {
         addprefabs.AddRange(Resources.LoadAll("Prefabs",typeof(GameObject)).Cast<GameObject>());
@@ -30,23 +32,27 @@ public class savesystem: MonoBehaviour
         string content2 = "";
         savedata.Clear();
         itemdata.Clear();
+
+      
+        
         foreach (var item in saveables)
         {
-            if (item.Value.TryGetComponent<Stats>(out Stats stat))
-            {
-                savedata.Add(stat.createSaveData());
-            }
+           
+                if (item.Value.TryGetComponent<Stats>(out Stats stat))
+                {
+                    savedata.Add(stat.createSaveData());
+                }
 
-            if (item.Value.TryGetComponent<pickle>(out pickle pickle))
-            {
-                itemdata.Add(pickle.createSaveData());
-            }
+                if (item.Value.TryGetComponent<pickle>(out pickle pickle))
+                {
+                    itemdata.Add(pickle.createSaveData());
+                }
+            
         }
        
 
         content = content+JsonHelper.ToJson<SaveData>(savedata.ToArray());
         content2 = content2+JsonHelper.ToJson<picklesave>(itemdata.ToArray());
-        print(content2);
         writeFile(content,Application.persistentDataPath + "/save.json");
         writeFile(content2, Application.persistentDataPath + "/saveitems.json");
     }
@@ -55,27 +61,100 @@ public class savesystem: MonoBehaviour
     [ContextMenu("Load")]
    public void loadGameObjects()
     {
-        string objects = readFile(Application.persistentDataPath + "/save.json");
+        IEnumerator loadroutine = LoadGameData(true);
+        StartCoroutine(loadroutine);
+    
+
+        //string objects = readFile(Application.persistentDataPath + "/save.json");
         
+        //List<SaveData> savedatas = JsonHelper.FromJson<SaveData>(objects).ToList<SaveData>();
+
+        //string saveitems= readFile(Application.persistentDataPath + "/saveitems.json");
+
+        //List<picklesave> itemdatas = JsonHelper.FromJson<picklesave>(saveitems).ToList<picklesave>();
+
+
+        //var player = GameObject.Find("Player");
+        //player.GetComponent<playerStats>().clearInventory();
+
+        //foreach (var saveable in saveables2)
+        //{
+        //    if (saveable.tag != "Player")
+        //    {
+        //        Destroy(saveable);
+        //    }  
+        //}
+        //saveables2.Clear();
+        //ids.Clear();
+        //player.GetComponent<playerStats>().templistClear();
+        //saveables2.Add(player);
+
+        //foreach (var data in savedatas)
+        //{
+        //    if (data.prefabname != "Player")
+        //    {
+        //        Vector3 spawnloc = new Vector3(data.position[0], data.position[1], data.position[2]);
+        //        var a = Instantiate(prefabs[data.prefabname], spawnloc, Quaternion.identity);
+        //        a.GetComponent<Stats>().loadData(data);
+              
+        //    }
+        //    else
+        //    {
+        //        player.transform.position = new Vector3(data.position[0], data.position[1], data.position[2]);
+        //    }
+        //}
+
+        //foreach (var item in saveables2)
+        //{
+        //    if (item.TryGetComponent<pickle>(out pickle pickle))
+        //    {
+        //        saveables.Add(pickle.id, item);
+        //    }
+        //}
+
+        //foreach (var data in itemdatas)
+        //{
+
+        //    Vector3 spawnloc = new Vector3(data.position[0], data.position[1], data.position[2]);
+        //    var a = Instantiate(prefabs[data.itemname], spawnloc, Quaternion.identity);
+        //    a.name = data.itemname;
+        //    a.GetComponent<pickle>().loadData(data);
+
+        //}
+
+        //player.GetComponent<playerStats>().followerList.Clear();
+        //player.GetComponent<playerStats>().followerList.Add(GameObject.Find("Robot(Clone)"));
+    }
+
+    private IEnumerator LoadGameData(bool willrepeat)
+    {
+        string objects = readFile(Application.persistentDataPath + "/save.json");
+
         List<SaveData> savedatas = JsonHelper.FromJson<SaveData>(objects).ToList<SaveData>();
 
-        string saveitems= readFile(Application.persistentDataPath + "/saveitems.json");
+        string saveitems = readFile(Application.persistentDataPath + "/saveitems.json");
 
         List<picklesave> itemdatas = JsonHelper.FromJson<picklesave>(saveitems).ToList<picklesave>();
+
 
         var player = GameObject.Find("Player");
         player.GetComponent<playerStats>().clearInventory();
 
-        foreach (var saveable in saveables)
+        foreach (var saveable in saveables2)
         {
-            if(saveable.Value.tag!="Player")
-            Destroy(saveable.Value);
+            if (saveable.tag != "Player")
+            {
+                Destroy(saveable);
+            }
         }
-        saveables.Clear();
-        
+        saveables2.Clear();
+        ids.Clear();
         player.GetComponent<playerStats>().templistClear();
+    
+        saveables.Clear();
+        saveables2.Add(player);
         saveables.Add(player.GetComponent<Stats>().id, player);
-       
+        yield return new WaitForEndOfFrame();
         foreach (var data in savedatas)
         {
             if (data.prefabname != "Player")
@@ -83,7 +162,7 @@ public class savesystem: MonoBehaviour
                 Vector3 spawnloc = new Vector3(data.position[0], data.position[1], data.position[2]);
                 var a = Instantiate(prefabs[data.prefabname], spawnloc, Quaternion.identity);
                 a.GetComponent<Stats>().loadData(data);
-              
+
             }
             else
             {
@@ -91,17 +170,30 @@ public class savesystem: MonoBehaviour
             }
         }
 
+        //foreach (var item in saveables2)
+        //{
+        //    if (item.TryGetComponent<Stats>(out Stats stats))
+        //    {
+        //        saveables.Add(stats.id, item);
+        //    }
+        //}
+        yield return new WaitForEndOfFrame();
         foreach (var data in itemdatas)
         {
 
             Vector3 spawnloc = new Vector3(data.position[0], data.position[1], data.position[2]);
             var a = Instantiate(prefabs[data.itemname], spawnloc, Quaternion.identity);
             a.name = data.itemname;
-            print(data.ownerID);
             a.GetComponent<pickle>().loadData(data);
-            
 
+        }
 
+        player.GetComponent<playerStats>().followerList.Clear();
+        player.GetComponent<playerStats>().followerList.Add(GameObject.Find("Robot(Clone)"));
+        yield return new WaitForEndOfFrame();
+        if (willrepeat)
+        {
+            StartCoroutine(LoadGameData(false));
         }
     }
 

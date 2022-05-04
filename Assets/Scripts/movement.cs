@@ -47,7 +47,7 @@ public class movement : MonoBehaviour
 
 
         float x = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(inputX * 6, inputY * 6);
+        rb.velocity = new Vector2(inputX * speed, inputY * speed);
 
         if (inputX != 0 && !isranged || inputY != 0 && !isranged)
         attackpoint.transform.position = new Vector2(gameObject.transform.position.x + Sign(inputX), gameObject.transform.position.y + Sign(inputY));

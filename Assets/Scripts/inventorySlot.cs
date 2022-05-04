@@ -10,18 +10,28 @@ public class inventorySlot : MonoBehaviour
     public playerStats pstats;
     public string inventoryType = "storage";
     public string ownerID;
-
+    public int slotindex;
     void Awake()
     {
-        pstats = GameObject.Find("Player").GetComponent<playerStats>();
-
-        //if (gameObject.tag == "InventorySlot")
-            
-
-        //Button button = gameObject.GetComponent<Button>();
-        //button.onClick.AddListener(dropItem);
         storedItems = new List<GameObject>();
+        StartCoroutine(awakerout());
+    }
+    IEnumerator awakerout()
+    {
+        yield return new WaitForEndOfFrame();
+
+        pstats = GameObject.Find("Player").GetComponent<playerStats>();
+        if (gameObject.tag == "InventorySlot")
+        {
+            ownerID = pstats.gameObject.GetComponent<Stats>().id;
+        }
+
+       
         gameObject.GetComponent<Button>().onClick.AddListener(pickputItem);
+        
+
+        //storedItems = new List<GameObject>();
+        //gameObject.GetComponent<Button>().onClick.AddListener(pickputItem);
     }
 
     public void dropItem()
@@ -256,20 +266,19 @@ public class inventorySlot : MonoBehaviour
     }
     public void additem(List<GameObject> items)
     {
-        ownerID = pstats.gameObject.GetComponent<Stats>().id;
+
+        print(ownerID);
+        if (ownerID == null)
+            print("OWNERID IS BLANK");
         if (storedItems.Count == 0)
         {
-            storedItems.AddRange(items);
+            print("YAGIZ YARAK" + items[0]);
             transform.Find("item").GetComponent<Image>().sprite = items[0].GetComponent<SpriteRenderer>().sprite;
             transform.Find("item").GetComponent<Image>().color = items[0].GetComponent<SpriteRenderer>().color;
-            transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = storedItems.Count.ToString();
             
-
-            //Todo
-            //if (inventoryType=="helmet")
-            //{
-                
-            //}
+            storedItems.AddRange(items);
+            transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = storedItems.Count.ToString();
+            print("SOTRED COUNT"+storedItems.Count);
         }
         else
         {
@@ -279,14 +288,28 @@ public class inventorySlot : MonoBehaviour
 
         foreach(var item in items)
         {
-            item.GetComponent<pickle>().ownerID = ownerID;
-            item.GetComponent<pickle>().slotindex = pstats.inventory.FindIndex(o => o == gameObject);
+
+                item.GetComponent<pickle>().ownerID = ownerID;
+
+            //slot owner
+           
+            var slot = GameObject.Find("Astarpath").GetComponent<savesystem>().saveables[ownerID];
+            if (slot.CompareTag("Player"))
+            {
+                item.GetComponent<pickle>().slotindex = pstats.inventory.FindIndex(o=>o == gameObject);
+            }
+            else
+            {
+                item.GetComponent<pickle>().slotindex = slotindex;
+            }
             
+           
         }
         
     }
 
     public void clearSlot(){
+        print("cleared");
         transform.Find("item").GetComponent<Image>().sprite = null;
         transform.Find("item").GetComponent<Image>().color = Color.clear;
         transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = "";

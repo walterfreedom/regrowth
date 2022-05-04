@@ -54,7 +54,7 @@ public class playerStats : MonoBehaviour
         oxygencanvas = gameObject.transform.Find("Canvas").Find("energybar").Find("bar").gameObject;
         stats = gameObject.GetComponent<Stats>();
         sellmode.onClick.AddListener(setSellmode);
-
+        //gameObject.transform.Find("Canvas").Find("inventory").gameObject.SetActive(false);
         updateMoney();
         //get inventory slots 
         var canvas = transform.Find("Canvas");
@@ -115,6 +115,16 @@ public class playerStats : MonoBehaviour
             //    selectedslot.GetComponent<inventorySlot>().dropItem(mousePosition);
             //}
             
+        }
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            gameObject.GetComponent<Stats>().energy -= Time.deltaTime*4;
+            
+            gameObject.GetComponent<movement>().speed = 12;
+        }
+        else
+        {
+            gameObject.GetComponent<movement>().speed = 6;
         }
         if (Input.GetKeyDown("g"))
         {

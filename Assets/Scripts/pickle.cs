@@ -19,7 +19,9 @@ public class pickle : MonoBehaviour
     {
         
             id = System.Guid.NewGuid().ToString();
+        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables2.Add(gameObject);
         GameObject.Find("Astarpath").GetComponent<savesystem>().saveables.Add(id,gameObject);
+        GameObject.Find("Astarpath").GetComponent<savesystem>().ids.Add(id);
     }
     public void damageItem(int damage)
     {
@@ -32,31 +34,40 @@ public class pickle : MonoBehaviour
 
     public picklesave createSaveData()
     {
-        print(this.ownerID);
         return new picklesave(this);
     }
     private void OnDestroy()
     {
-        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables.Remove(id);
+        GameObject.Find("Astarpath").GetComponent<savesystem>().saveables2.Remove(gameObject);
     }
 
     public void loadData(picklesave data)
     {
+        StartCoroutine(loadDT(data));
+    }
+
+    IEnumerator loadDT(picklesave data)
+    {
+        yield return new WaitForEndOfFrame();
+
         if (data.ownerID != "")
         {
             ownerID = data.ownerID;
             gameObject.active = false;
-           
+            slotindex = data.slotindex;
             var owner = GameObject.Find("Astarpath").GetComponent<savesystem>().saveables[ownerID];
-            if (owner.tag=="Player")
+
+            if (owner.tag == "Player")
             {
+                //owner ID's are buggy, inventory slots wont have them. 
                 List<GameObject> item = new List<GameObject>();
                 item.Add(gameObject);
                 owner.GetComponent<playerStats>().inventory[data.slotindex].GetComponent<inventorySlot>().additem(item);
+
             }
             else
             {
-                owner.GetComponent<chest>().storeditems[data.slotindex].data.Add(gameObject);   
+                owner.GetComponent<chest>().storeditems[slotindex].data.Add(gameObject);
             }
         }
 

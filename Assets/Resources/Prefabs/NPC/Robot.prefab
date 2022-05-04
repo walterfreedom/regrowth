@@ -631,7 +631,7 @@ MonoBehaviour:
   projectiles:
   - {fileID: 4970818461298461453, guid: 5310c7c405708b14a91a3bc11f80e557, type: 3}
   gun: {fileID: 929532354100039893}
-  owner: {fileID: 0}
+  owner: {fileID: 843860604147733983, guid: bc993cba5d3d9fd4b9a709a770585b48, type: 3}
   whattodrop: {fileID: 0}
   hasenemyinrange: 0
   targetedobject: {fileID: 0}
@@ -770,6 +770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af33787b2298af045955693898f2b131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chestID: 
 --- !u!95 &4483922457611013782
 Animator:
   serializedVersion: 3
