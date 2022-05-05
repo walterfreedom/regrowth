@@ -37,7 +37,8 @@ public class savesystem: MonoBehaviour
         
         foreach (var item in saveables)
         {
-           
+            if (item.Value != null)
+            {
                 if (item.Value.TryGetComponent<Stats>(out Stats stat))
                 {
                     savedata.Add(stat.createSaveData());
@@ -47,10 +48,8 @@ public class savesystem: MonoBehaviour
                 {
                     itemdata.Add(pickle.createSaveData());
                 }
-            
+            }      
         }
-       
-
         content = content+JsonHelper.ToJson<SaveData>(savedata.ToArray());
         content2 = content2+JsonHelper.ToJson<picklesave>(itemdata.ToArray());
         writeFile(content,Application.persistentDataPath + "/save.json");
@@ -182,10 +181,16 @@ public class savesystem: MonoBehaviour
         {
 
             Vector3 spawnloc = new Vector3(data.position[0], data.position[1], data.position[2]);
-            var a = Instantiate(prefabs[data.itemname], spawnloc, Quaternion.identity);
-            a.name = data.itemname;
-            a.GetComponent<pickle>().loadData(data);
-
+            try
+            {
+                var a = Instantiate(prefabs[data.itemname], spawnloc, Quaternion.identity);
+                a.name = data.itemname;
+                a.GetComponent<pickle>().loadData(data);
+            }
+            catch
+            {
+                print(data.itemname);
+            }
         }
 
         player.GetComponent<playerStats>().followerList.Clear();

@@ -153,7 +153,10 @@ public class playerStats : MonoBehaviour
             var stats = player.GetComponent<playerStats>();
             foreach (var hit in hits)
             {   
-                
+                if(hit.transform.gameObject.TryGetComponent<car>(out car car))
+                {
+                    hit.transform.Find("Camera").gameObject.SetActive(true);
+                }
                 if (hit.transform.gameObject.TryGetComponent<pickle>(out pickle pickle1))
                 {
                     if (pickle1.infiniteitemspawn)

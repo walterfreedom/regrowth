@@ -285,26 +285,27 @@ public class inventorySlot : MonoBehaviour
             storedItems.AddRange(items);
             transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = storedItems.Count.ToString();
         }
-
-        foreach(var item in items)
+        if (ownerID != "")
         {
+            foreach (var item in items)
+            {
 
                 item.GetComponent<pickle>().ownerID = ownerID;
 
-            //slot owner
-           
-            var slot = GameObject.Find("Astarpath").GetComponent<savesystem>().saveables[ownerID];
-            if (slot.CompareTag("Player"))
-            {
-                item.GetComponent<pickle>().slotindex = pstats.inventory.FindIndex(o=>o == gameObject);
+                //slot owner
+
+                var slot = GameObject.Find("Astarpath").GetComponent<savesystem>().saveables[ownerID];
+                if (slot.CompareTag("Player"))
+                {
+                    item.GetComponent<pickle>().slotindex = pstats.inventory.FindIndex(o => o == gameObject);
+                }
+                else
+                {
+                    item.GetComponent<pickle>().slotindex = slotindex;
+                }
             }
-            else
-            {
-                item.GetComponent<pickle>().slotindex = slotindex;
-            }
-            
-           
         }
+       
         
     }
 
