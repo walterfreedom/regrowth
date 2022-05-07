@@ -35,7 +35,7 @@ public class playerStats : MonoBehaviour
     bool inventoryMode;
     chest lastchest;
 
-
+    public bool busy = false;
     public Sprite selected;
     public Sprite defaultspr;
 
@@ -104,9 +104,17 @@ public class playerStats : MonoBehaviour
                 var mscript = gameObject.GetComponent<movement>();
                 var gun = selectedslot.GetComponent<inventorySlot>().storedItems[0];
                 gun.GetComponent<weaponstats>().shoot(stats.enemylist,gameObject,mscript.gun.transform);
-               
+                
+                
                 //stats.attackset();
 
+            }
+            else if (selectedslot.GetComponent<inventorySlot>().storedItems[0].TryGetComponent<car>(out car car))
+            {
+                Vector3 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
+                mousePosition.z = 0;
+                selectedslot.GetComponent<inventorySlot>().dropItem(mousePosition);
+                GameObject.Find("dronecam").GetComponent<camerascript>().target = car.gameObject;
             }
             //else
             //{
@@ -114,7 +122,7 @@ public class playerStats : MonoBehaviour
             //    mousePosition.z = 0;
             //    selectedslot.GetComponent<inventorySlot>().dropItem(mousePosition);
             //}
-            
+
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -146,6 +154,13 @@ public class playerStats : MonoBehaviour
         {
             GameObject.Find("Astarpath").GetComponent<savesystem>().loadGameObjects();
         }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            busy = !busy;
+            var cam = transform.Find("Canvas").Find("cam").gameObject;
+            cam.gameObject.SetActive(!cam.activeSelf);
+            GameObject.Find("dronecam").GetComponent<camerascript>().target.GetComponent<car>().willmove = cam.activeSelf;
+        }
         if (Input.GetKeyDown("e"))
         {
             Vector3 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
@@ -153,10 +168,6 @@ public class playerStats : MonoBehaviour
             var stats = player.GetComponent<playerStats>();
             foreach (var hit in hits)
             {   
-                if(hit.transform.gameObject.TryGetComponent<car>(out car car))
-                {
-                    hit.transform.Find("Camera").gameObject.SetActive(true);
-                }
                 if (hit.transform.gameObject.TryGetComponent<pickle>(out pickle pickle1))
                 {
                     if (pickle1.infiniteitemspawn)
@@ -196,36 +207,37 @@ public class playerStats : MonoBehaviour
 
                 if (hit.transform.gameObject.TryGetComponent<shoopKeeper>(out shoopKeeper shop))
                 {
-                    List<GameObject> ShoppingList = new List<GameObject>();
-                    ShoppingList.AddRange(shop.inventory);
+                    shop.gameObject.GetComponent<moveScene>().movescene();
+                    //List<GameObject> ShoppingList = new List<GameObject>();
+                    //ShoppingList.AddRange(shop.inventory);
 
-                    //yay shopping! consoooooooom!
-                    int x = -110;
-                    int y = 120;
-                    int itemorder = 1;
+                    ////yay shopping! consoooooooom!
+                    //int x = -110;
+                    //int y = 120;
+                    //int itemorder = 1;
 
-                    foreach (var item in ShoppingList)
-                    {
+                    //foreach (var item in ShoppingList)
+                    //{
 
-                        var frame = shopcanvas.transform.Find("tempbutton");
-                        var shopping = Instantiate(frame, shopcanvas.transform);
-                        stufftodestory.Add(shopping.gameObject);
-                        shopping.name = "shopbutton" + itemorder;
-                        shopping.gameObject.active = true;
-                        shopping.Find("Img").GetComponent<Image>().sprite = item.GetComponent<SpriteRenderer>().sprite;
-                        shopping.Find("Img").GetComponent<Image>().color = item.GetComponent<SpriteRenderer>().color;
-                        shopping.Find("Text (TMP)").GetComponent<TMP_Text>().text = item.GetComponent<pickle>().name;
-                        shopping.GetComponent<shopscript>().storedItems.Add(item);
-                        shopping.transform.localPosition = new Vector2(x, y);
-                        x += 110;
-                        itemorder++;
-                        if (itemorder % 3 == 1)
-                        {
-                            y -= 100;
-                            x = -110;
-                        }
-                    }
-                    openShop();
+                    //    var frame = shopcanvas.transform.Find("tempbutton");
+                    //    var shopping = Instantiate(frame, shopcanvas.transform);
+                    //    stufftodestory.Add(shopping.gameObject);
+                    //    shopping.name = "shopbutton" + itemorder;
+                    //    shopping.gameObject.active = true;
+                    //    shopping.Find("Img").GetComponent<Image>().sprite = item.GetComponent<SpriteRenderer>().sprite;
+                    //    shopping.Find("Img").GetComponent<Image>().color = item.GetComponent<SpriteRenderer>().color;
+                    //    shopping.Find("Text (TMP)").GetComponent<TMP_Text>().text = item.GetComponent<pickle>().name;
+                    //    shopping.GetComponent<shopscript>().storedItems.Add(item);
+                    //    shopping.transform.localPosition = new Vector2(x, y);
+                    //    x += 110;
+                    //    itemorder++;
+                    //    if (itemorder % 3 == 1)
+                    //    {
+                    //        y -= 100;
+                    //        x = -110;
+                    //    }
+                    //}
+                    //openShop();
                 }
 
                 if (hit.transform.gameObject.TryGetComponent<Greenify>(out Greenify greenify)) {

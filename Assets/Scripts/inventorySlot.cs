@@ -267,18 +267,16 @@ public class inventorySlot : MonoBehaviour
     public void additem(List<GameObject> items)
     {
 
-        print(ownerID);
+  
         if (ownerID == null)
             print("OWNERID IS BLANK");
         if (storedItems.Count == 0)
         {
-            print("YAGIZ YARAK" + items[0]);
             transform.Find("item").GetComponent<Image>().sprite = items[0].GetComponent<SpriteRenderer>().sprite;
             transform.Find("item").GetComponent<Image>().color = items[0].GetComponent<SpriteRenderer>().color;
             
             storedItems.AddRange(items);
             transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = storedItems.Count.ToString();
-            print("SOTRED COUNT"+storedItems.Count);
         }
         else
         {
@@ -310,7 +308,6 @@ public class inventorySlot : MonoBehaviour
     }
 
     public void clearSlot(){
-        print("cleared");
         transform.Find("item").GetComponent<Image>().sprite = null;
         transform.Find("item").GetComponent<Image>().color = Color.clear;
         transform.Find("Text (TMP)").GetComponent<TMP_Text>().text = "";

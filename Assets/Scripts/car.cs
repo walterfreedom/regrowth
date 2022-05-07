@@ -8,23 +8,37 @@ public class car : MonoBehaviour
     public int drip = 0;
     public AudioClip whatsappsoundeffect;
     float speed = 6;
+    float turnspeed = 90;
+    float speedmod = 1;
+    public bool willmove = false;
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (willmove)
         {
-            Vector3 v3Force = speed * transform.right;
-            rb.velocity=v3Force;
-            print("araba");
+           
+               
+            if (Input.GetKey(KeyCode.Space))
+            {
+                turnspeed = 180;
+                speedmod = 0.5f;
+            }
+            else
+            {
+                turnspeed = 90;
+                speedmod = 1;
+            }
+            Vector3 v3Force = speed * transform.right * Input.GetAxisRaw("Vertical") *speedmod; ;
+            rb.velocity = v3Force;
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.rotation *= Quaternion.Euler(Vector3.forward * turnspeed * Time.deltaTime*-1);
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.rotation *= Quaternion.Euler(Vector3.forward * turnspeed * Time.deltaTime);
+            }
         }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.rotation *= Quaternion.Euler(Vector3.forward * -90 * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.rotation *= Quaternion.Euler(Vector3.forward * 90*Time.deltaTime);
-            print("araba");
-        }
+       
     }
 
 

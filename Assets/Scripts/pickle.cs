@@ -87,7 +87,7 @@ public class picklesave
     public float[] position = new float[3];
     public picklesave(pickle pickle)
     {
-        itemname = pickle.gameObject.name;
+        itemname = pickle.itemname;
         slotindex = pickle.slotindex;
         ownerID = pickle.ownerID;
         position[0] = pickle.gameObject.transform.position.x;

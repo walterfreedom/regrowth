@@ -5,36 +5,36 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class savesystem: MonoBehaviour
+public class savesystem : MonoBehaviour
 {
     public Dictionary<string, GameObject> saveables = new Dictionary<string, GameObject>();
-    public List<GameObject> saveables2=new List<GameObject>();
+    public List<GameObject> saveables2 = new List<GameObject>();
     public List<string> ids = new List<string>();
     private List<SaveData> savedata = new List<SaveData>();
     private List<picklesave> itemdata = new List<picklesave>();
     public List<GameObject> addprefabs;
-    public Dictionary<string,GameObject> prefabs = new Dictionary<string, GameObject>();
-    string path; 
+    public Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>();
+    string path;
     private void Start()
     {
-        addprefabs.AddRange(Resources.LoadAll("Prefabs",typeof(GameObject)).Cast<GameObject>());
-        foreach(var prefab in addprefabs)
+        addprefabs.AddRange(Resources.LoadAll("Prefabs", typeof(GameObject)).Cast<GameObject>());
+        foreach (var prefab in addprefabs)
         {
-         
-            prefabs.Add(prefab.name, prefab); 
+
+            prefabs.Add(prefab.name, prefab);
         }
     }
     [ContextMenu("Save")]
     public void SaveGameObjects()
     {
-       
+
         string content = "";
         string content2 = "";
         savedata.Clear();
         itemdata.Clear();
 
-      
-        
+
+
         foreach (var item in saveables)
         {
             if (item.Value != null)
@@ -48,24 +48,24 @@ public class savesystem: MonoBehaviour
                 {
                     itemdata.Add(pickle.createSaveData());
                 }
-            }      
+            }
         }
-        content = content+JsonHelper.ToJson<SaveData>(savedata.ToArray());
-        content2 = content2+JsonHelper.ToJson<picklesave>(itemdata.ToArray());
-        writeFile(content,Application.persistentDataPath + "/save.json");
+        content = content + JsonHelper.ToJson<SaveData>(savedata.ToArray());
+        content2 = content2 + JsonHelper.ToJson<picklesave>(itemdata.ToArray());
+        writeFile(content, Application.persistentDataPath + "/save.json");
         writeFile(content2, Application.persistentDataPath + "/saveitems.json");
     }
-   
+
 
     [ContextMenu("Load")]
-   public void loadGameObjects()
+    public void loadGameObjects()
     {
         IEnumerator loadroutine = LoadGameData(true);
         StartCoroutine(loadroutine);
-    
+
 
         //string objects = readFile(Application.persistentDataPath + "/save.json");
-        
+
         //List<SaveData> savedatas = JsonHelper.FromJson<SaveData>(objects).ToList<SaveData>();
 
         //string saveitems= readFile(Application.persistentDataPath + "/saveitems.json");
@@ -95,7 +95,7 @@ public class savesystem: MonoBehaviour
         //        Vector3 spawnloc = new Vector3(data.position[0], data.position[1], data.position[2]);
         //        var a = Instantiate(prefabs[data.prefabname], spawnloc, Quaternion.identity);
         //        a.GetComponent<Stats>().loadData(data);
-              
+
         //    }
         //    else
         //    {
@@ -149,7 +149,7 @@ public class savesystem: MonoBehaviour
         saveables2.Clear();
         ids.Clear();
         player.GetComponent<playerStats>().templistClear();
-    
+
         saveables.Clear();
         saveables2.Add(player);
         saveables.Add(player.GetComponent<Stats>().id, player);
@@ -181,6 +181,8 @@ public class savesystem: MonoBehaviour
         {
 
             Vector3 spawnloc = new Vector3(data.position[0], data.position[1], data.position[2]);
+
+
             try
             {
                 var a = Instantiate(prefabs[data.itemname], spawnloc, Quaternion.identity);
@@ -214,7 +216,7 @@ public class savesystem: MonoBehaviour
         }
 
     }
-    
+
     private string readFile(string path)
     {
         FileStream file = new FileStream(path, FileMode.Open);
@@ -226,6 +228,63 @@ public class savesystem: MonoBehaviour
         }
     }
 
+    public void loadPlayerDataOnly()
+    {
+        StartCoroutine(pdataonly(true));
+    }
+
+    private IEnumerator pdataonly(bool willrepeat)
+    {
+        string objects = readFile(Application.persistentDataPath + "/save.json");
+
+        List<SaveData> savedatas = JsonHelper.FromJson<SaveData>(objects).ToList<SaveData>();
+
+        string saveitems = readFile(Application.persistentDataPath + "/saveitems.json");
+
+        List<picklesave> itemdatas = JsonHelper.FromJson<picklesave>(saveitems).ToList<picklesave>();
+
+
+        var player = GameObject.Find("Player");
+        player.GetComponent<playerStats>().clearInventory();
+
+        foreach (var saveable in saveables2)
+        {
+            if (saveable.tag != "Player")
+            {
+                Destroy(saveable);
+            }
+        }
+        saveables2.Clear();
+        ids.Clear();
+        player.GetComponent<playerStats>().templistClear();
+
+        saveables.Clear();
+        saveables2.Add(player);
+        saveables.Add(player.GetComponent<Stats>().id, player);
+        yield return new WaitForEndOfFrame();
+
+        foreach (var data in itemdatas)
+        {
+
+            Vector3 spawnloc = new Vector3(data.position[0], data.position[1], data.position[2]);
+
+            if (data.ownerID == player.GetComponent<Stats>().id)
+            {
+                try
+                {
+
+                    var a = Instantiate(prefabs[data.itemname], spawnloc, Quaternion.identity);
+                    a.name = data.itemname;
+                    a.GetComponent<pickle>().loadData(data);
+                }
+                catch
+                {
+                    print(data.itemname);
+                }
+            }
+        }
+
+    }
 }
 
 public static class JsonHelper

@@ -9,7 +9,10 @@ public class moveScene : MonoBehaviour
     public void movescene()
     {
         SceneManager.LoadScene(scene);
-        var manager = GameObject.Find("manager");
-        manager.GetComponent<SaveScore>().score = 0;
+
+        var player = GameObject.Find("Player");
+        var manager = GameObject.Find("Astarpath");
+        DontDestroyOnLoad(player);
+        DontDestroyOnLoad(manager);
     }
 }

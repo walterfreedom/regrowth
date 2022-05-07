@@ -37,7 +37,7 @@ public class movement : MonoBehaviour
 
 
        animator.SetFloat("Speed", Mathf.Abs(inputY)  + Mathf.Abs(inputX) );
-        if (Mathf.Abs(inputY) + Mathf.Abs(inputX) > 0.01f)
+        if (Mathf.Abs(inputY) + Mathf.Abs(inputX) > 0.01f )
         {
             animator.SetFloat("LastHorizontal", inputX);
             animator.SetFloat("LastVertical", inputY);
@@ -45,9 +45,11 @@ public class movement : MonoBehaviour
             animator.SetFloat("Vertical", inputY);
         }
 
-
-        float x = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(inputX * speed, inputY * speed);
+        if (!gameObject.GetComponent<playerStats>().busy)
+        {
+            float x = Input.GetAxisRaw("Horizontal");
+            rb.velocity = new Vector2(inputX * speed, inputY * speed);
+        }
 
         if (inputX != 0 && !isranged || inputY != 0 && !isranged)
         attackpoint.transform.position = new Vector2(gameObject.transform.position.x + Sign(inputX), gameObject.transform.position.y + Sign(inputY));
