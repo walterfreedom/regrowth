@@ -112,7 +112,7 @@ public class worldgen : MonoBehaviour
             {
                 try
                 {
-                    if (worldmap[y, x] <= waterlevel && worldmap[x, y + 1] >= waterlevel)
+                    if (worldmap[y, x] <= waterlevel && worldmap[x, y + 1] >= waterlevel&& Solid.GetTile(new Vector3Int(x,y,0))==null && Solid.GetTile(new Vector3Int(x+1, y+1, 0))==null)
                     {
                         
                         print(worldmap[x, y + 1]);
@@ -128,14 +128,78 @@ public class worldgen : MonoBehaviour
                 break;
         }
 
+        for (int y = 0; y < width; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                try
+                {
+                    if (Mathf.PerlinNoise(x * scale / width + offsety,y * scale / height + offsetx) <= waterlevel)
+                    {
+                        Solid.SetTile(new Vector3Int(x, y, 0), rock);
+                        
+                    }
+                }
+                catch { }
+            }
+          
+        }
+
 
         //player items
         var manager= GameObject.Find("Astarpath");
         manager.GetComponent<savesystem>().loadPlayerDataOnly();
         var player = GameObject.Find("Player");
         player.transform.position = spawn2.transform.position;
+        int yax = 2;
+        foreach(var follower in player.GetComponent<playerStats>().followerList)
+        {
+            follower.transform.position = new Vector3(player.transform.position.x,player.transform.position.y+yax,0);
+            yax += 2;
+        }
+
+        for (int y = 0; y < width; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                try
+                {
+                    if (worldmap[x, y] >= waterlevel)
+                    {
+                        //check surroundings;
+                        bool willspawn = true;
+                        for(int nx =-10; nx <= 10; nx++)
+                        {
+                            for (int ny = -3; ny <= 3; ny++)
+                            {
+                                if (worldmap[x+nx, y+ny] < waterlevel|| Solid.GetTile(new Vector3Int(x, y, 0))!=null)
+                                    willspawn = false;
+                            }
+                        }
+                        
+                        if (willspawn)
+                        {
+                            Instantiate(TerrainPrefabs[0],new Vector3(x,y,0),Quaternion.identity);
+                            x += 20;
+                            y += 20;
+                        }
+                            
+                    }
+
+                   
+                }
+                catch { }
+            }
+            
+        }
+        StartCoroutine(scangraph());
     }
 
+    IEnumerator scangraph()
+    {
+        yield return new WaitForEndOfFrame();
+        AstarPath.active.Scan();
+    }
 
     void createBiomes()
     {

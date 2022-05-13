@@ -249,7 +249,7 @@ public class savesystem : MonoBehaviour
 
         foreach (var saveable in saveables2)
         {
-            if (saveable.tag != "Player")
+            if (saveable.tag != "Player"&&!player.GetComponent<playerStats>().followerList.Contains(saveable))
             {
                 Destroy(saveable);
             }

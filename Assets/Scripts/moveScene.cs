@@ -14,5 +14,14 @@ public class moveScene : MonoBehaviour
         var manager = GameObject.Find("Astarpath");
         DontDestroyOnLoad(player);
         DontDestroyOnLoad(manager);
+        foreach(var follower in player.GetComponent<playerStats>().followerList)
+        {
+            DontDestroyOnLoad(follower);
+        }
+    
+        foreach (var go in GameObject.FindObjectsOfType<dontDestroy>())
+        {
+            DontDestroyOnLoad(go);
+        }
     }
 }

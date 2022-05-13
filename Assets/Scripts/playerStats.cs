@@ -39,6 +39,8 @@ public class playerStats : MonoBehaviour
     public Sprite selected;
     public Sprite defaultspr;
 
+    shoopKeeper lastshop;
+
     //ITEM E SHOULD CALL PICKPUTITEM()
     //PALYER ID RESETS
 
@@ -108,6 +110,12 @@ public class playerStats : MonoBehaviour
                 
                 //stats.attackset();
 
+            }
+            else if(selectedslot.GetComponent<inventorySlot>().storedItems[0].GetComponent<pickle>().category == "meleeweapon" && stats.canAttack)
+            {
+                var mscript = gameObject.GetComponent<movement>();
+                var gun = selectedslot.GetComponent<inventorySlot>().storedItems[0];
+                gun.GetComponent<weaponstats>().swing(stats.enemylist, gameObject, mscript.gun.transform);
             }
             else if (selectedslot.GetComponent<inventorySlot>().storedItems[0].TryGetComponent<car>(out car car))
             {
@@ -207,45 +215,21 @@ public class playerStats : MonoBehaviour
 
                 if (hit.transform.gameObject.TryGetComponent<shoopKeeper>(out shoopKeeper shop))
                 {
-                    shop.gameObject.GetComponent<moveScene>().movescene();
-                    //List<GameObject> ShoppingList = new List<GameObject>();
-                    //ShoppingList.AddRange(shop.inventory);
-
-                    ////yay shopping! consoooooooom!
-                    //int x = -110;
-                    //int y = 120;
-                    //int itemorder = 1;
-
-                    //foreach (var item in ShoppingList)
-                    //{
-
-                    //    var frame = shopcanvas.transform.Find("tempbutton");
-                    //    var shopping = Instantiate(frame, shopcanvas.transform);
-                    //    stufftodestory.Add(shopping.gameObject);
-                    //    shopping.name = "shopbutton" + itemorder;
-                    //    shopping.gameObject.active = true;
-                    //    shopping.Find("Img").GetComponent<Image>().sprite = item.GetComponent<SpriteRenderer>().sprite;
-                    //    shopping.Find("Img").GetComponent<Image>().color = item.GetComponent<SpriteRenderer>().color;
-                    //    shopping.Find("Text (TMP)").GetComponent<TMP_Text>().text = item.GetComponent<pickle>().name;
-                    //    shopping.GetComponent<shopscript>().storedItems.Add(item);
-                    //    shopping.transform.localPosition = new Vector2(x, y);
-                    //    x += 110;
-                    //    itemorder++;
-                    //    if (itemorder % 3 == 1)
-                    //    {
-                    //        y -= 100;
-                    //        x = -110;
-                    //    }
-                    //}
-                    //openShop();
+                    lastshop = shop;
+                   
+                    if (hit.transform.TryGetComponent<walterfreedom>(out walterfreedom walterfreedom))
+                    {
+                        walterfreedom.transform.Find("Canvas").gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        openShop();
+                    }
                 }
-
-                if (hit.transform.gameObject.TryGetComponent<Greenify>(out Greenify greenify)) {
-                    greenify.unGreen();
-                    print("trying to ungreen");
-                }
+                
 
             }
+
 
         }
         if (Input.GetKeyDown("i"))
@@ -413,7 +397,7 @@ public class playerStats : MonoBehaviour
         var storeditm = selectedslot.GetComponent<inventorySlot>().storedItems;
         if (storeditm.Count != 0)
         {
-            if (storeditm[0].GetComponent<pickle>().category == "weapon")
+            if (storeditm[0].GetComponent<pickle>().category == "weapon"|| storeditm[0].GetComponent<pickle>().category == "meleeweapon")
             {
                 gameObject.GetComponent<movement>().gun.GetComponent<SpriteRenderer>().sprite =
                storeditm[0].GetComponent<SpriteRenderer>().sprite;
@@ -440,8 +424,37 @@ public class playerStats : MonoBehaviour
     }
 
     
-    void openShop()
+    public void openShop()
     {
+        List<GameObject> ShoppingList = new List<GameObject>();
+        ShoppingList.AddRange(lastshop.inventory);
+
+        //yay shopping! consoooooooom!
+        int x = -110;
+        int y = 120;
+        int itemorder = 1;
+
+        foreach (var item in ShoppingList)
+        {
+
+            var frame = shopcanvas.transform.Find("tempbutton");
+            var shopping = Instantiate(frame, shopcanvas.transform);
+            stufftodestory.Add(shopping.gameObject);
+            shopping.name = "shopbutton" + itemorder;
+            shopping.gameObject.active = true;
+            shopping.Find("Img").GetComponent<Image>().sprite = item.GetComponent<SpriteRenderer>().sprite;
+            shopping.Find("Img").GetComponent<Image>().color = item.GetComponent<SpriteRenderer>().color;
+            shopping.Find("Text (TMP)").GetComponent<TMP_Text>().text = item.GetComponent<pickle>().name;
+            shopping.GetComponent<shopscript>().storedItems.Add(item);
+            shopping.transform.localPosition = new Vector2(x, y);
+            x += 110;
+            itemorder++;
+            if (itemorder % 3 == 1)
+            {
+                y -= 100;
+                x = -110;
+            }
+        }
         shopcanvas.SetActive(!shopcanvas.activeSelf);
     }
     public void increaseScore(int scoreincrease)

@@ -55,7 +55,6 @@ public class Stats : MonoBehaviour
     
     private void Awake()
     {
-        
         if (id == "" && gameObject.tag != "Player")
             id = System.Guid.NewGuid().ToString();
         else

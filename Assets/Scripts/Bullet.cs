@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Tilemaps;
 
 public class Bullet : MonoBehaviour
 {
@@ -34,6 +34,10 @@ public class Bullet : MonoBehaviour
                     collision.gameObject.GetComponent<Stats>().DamageOrKill(damage, collision.gameObject, 5, shooter);
                     Destroy(gameObject);
                 }
+            }
+            if(collision.TryGetComponent<Tilemap>(out Tilemap tilemap) && collision.tag == "Obstacle")
+            {
+            tilemap.SetTile(new Vector3Int((int)transform.position.x, (int)transform.position.y, 0), null);
             }
        
     }

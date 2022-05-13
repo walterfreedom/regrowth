@@ -12,6 +12,7 @@ public class movement : MonoBehaviour
     bool isranged = true;
     public GameObject gun;
     public Vector3 shootdirection;
+    public float LARPMACHINE;
 
 
     // Start is called before the first frame update
@@ -64,14 +65,18 @@ public class movement : MonoBehaviour
 
                 gun.GetComponent<SpriteRenderer>().flipY = false;
             }
-            else{
+            else
+            {
               
                
                 gun.GetComponent<SpriteRenderer>().flipY = true;
             }
             float angle = Mathf.Atan2(shootdirection.x, shootdirection.y) * Mathf.Rad2Deg;
-            attackpoint.transform.eulerAngles = new Vector3(0, 0, 90-angle);
-
+            LARPMACHINE = Mathf.Lerp(LARPMACHINE, 0, Time.deltaTime*6);
+           
+            attackpoint.transform.eulerAngles = new Vector3(0, 0, 90 - angle + LARPMACHINE);
+           
+             
         }
 
         //rb.AddForce(Player.transform.TransformVector(new Vector2(inputX, inputY)) * 2.0f); //snoww!!!

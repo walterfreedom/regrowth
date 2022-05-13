@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/2Drpg.unity
     guid: 278516924a797384880d9c544d45bc81
+  - enabled: 1
+    path: Assets/Scenes/battle.unity
+    guid: 0fea102f13e1da64eb007747ac309164
   m_configObjects: {}
