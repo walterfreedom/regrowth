@@ -48,6 +48,7 @@ public class Stats : MonoBehaviour
     public GameObject whattodrop;
     bool usedefault = false;
     int goldvalue = 50;
+    public bool shieldmode=false;
 
     GameObject healthbar;
 
@@ -147,23 +148,41 @@ public class Stats : MonoBehaviour
         //if health wont drop to or below zero after attack
         if (health - damage > 0)
         {
-            //decrease health by damage
-            health -= damage;
-            Vector2 knockbackDirection = new Vector2(ItemToDealDamage.transform.position.x - attacker.transform.position.x, ItemToDealDamage.transform.position.y - attacker.transform.position.y).normalized;
-            //ItemToDealDamage.GetComponent<Rigidbody2D>().AddForce(knockback*knockbackDirection*100);
-           
+            if (!shieldmode)
+            {
+                //decrease health by damage
+                health -= damage;
+                Vector2 knockbackDirection = new Vector2(ItemToDealDamage.transform.position.x - attacker.transform.position.x, ItemToDealDamage.transform.position.y - attacker.transform.position.y).normalized;
+                //ItemToDealDamage.GetComponent<Rigidbody2D>().AddForce(knockback*knockbackDirection*100);
 
-            Status a = new Status("stun",1,1);
-            statuslist.Add(a);
-            var bar = healthbar.transform.Find("bar");
+
+                Status a = new Status("stun", 1, 1);
+                statuslist.Add(a);
+                var bar = healthbar.transform.Find("bar");
                 healthbar.gameObject.active = true;
-            bar.GetComponent<Slider>().value = ((float)health / (float)maxhealth) * 100.0f;
+                bar.GetComponent<Slider>().value = ((float)health / (float)maxhealth) * 100.0f;
+            }
+            else
+            {
+                energy -= damage;
+                
+            }
 
         }
         else
         {
             droploot(gameObject.transform.position);
             Destroy(ItemToDealDamage.gameObject);
+           var quest= GameObject.Find("WalterFreedom").GetComponent<walterfreedom>();
+            foreach(quest q in quest.quests)
+            {
+                if (q.name == "kill")
+                {
+                    if (q.checkQuest(name))
+                        quest.quests.Remove(q);
+                        
+                }
+            }
         }
     }
 

@@ -157,7 +157,7 @@ public class worldgen : MonoBehaviour
             follower.transform.position = new Vector3(player.transform.position.x,player.transform.position.y+yax,0);
             yax += 2;
         }
-
+        GameObject.Find("WalterFreedom").transform.position= new Vector3(player.transform.position.x, player.transform.position.y + yax, 0);
         for (int y = 0; y < width; y++)
         {
             for (int x = 0; x < width; x++)

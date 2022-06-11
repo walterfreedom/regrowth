@@ -31,13 +31,13 @@ public class weaponstats: MonoBehaviour
         {
             if (Mathf.Abs(player.transform.Find("atk").rotation.eulerAngles.z) > 90&& Mathf.Abs(player.transform.Find("atk").rotation.eulerAngles.z) <270)
             {
-                print(player.transform.Find("atk").rotation.eulerAngles.z);
+                //print(player.transform.Find("atk").rotation.eulerAngles.z);
                 player.GetComponent<movement>().LARPMACHINE = Mathf.Lerp(90, 0, Time.deltaTime);
             }
 
             else
             {
-                print(player.transform.Find("atk").rotation.eulerAngles.z);
+                //print(player.transform.Find("atk").rotation.eulerAngles.z);
                 player.GetComponent<movement>().LARPMACHINE = Mathf.Lerp(-90, 0, Time.deltaTime);
             }
 

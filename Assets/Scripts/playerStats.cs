@@ -246,7 +246,13 @@ public class playerStats : MonoBehaviour
             }
            
         }
-       
+
+        if (Input.GetKeyDown("q"))
+        {
+            gameObject.GetComponent<Stats>().shieldmode=!gameObject.GetComponent<Stats>().shieldmode;
+            transform.Find("shield").gameObject.SetActive(!transform.Find("shield").gameObject.active);
+        }
+
         if (Input.GetKeyDown("c"))
         {
             craftingToggle();
