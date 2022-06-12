@@ -25,6 +25,7 @@ public class AIstats : MonoBehaviour
     public GameObject targetedobject;
     public GameObject healthbar;
     Transform anchor;
+    public bool BLACKEAGLESPECIAL=false;
 
     private void Start()
     {
@@ -63,17 +64,40 @@ public class AIstats : MonoBehaviour
     }
     public void AIshootat(GameObject enemy)
     {
+
+        //NOTE TO SELF
+        //if bullets doesn't spawn, go check the transform of the prefabs. positions should be  0 0 0 for gun and all else. 
+        //this is only for the prefab of the mob
         if (attackCooldown <= 0)
         {
             Vector3 source = this.transform.position;
             Vector3 shootdirection = (enemy.transform.position - gameObject.transform.position).normalized;
             float angle = Mathf.Atan2(shootdirection.x, shootdirection.y) * Mathf.Rad2Deg;
             gun.transform.eulerAngles = new Vector3(0, 180, angle);
-            ShootingScript shooting = new ShootingScript();
-            shooting.shoot(projectiles[0], enemy.transform, gun.transform, gameObject);
+            if (BLACKEAGLESPECIAL)
+            {
+                angle -= 20;
+                for(int j =0; j < 3; j++)
+                {
+                    angle += 10;
+                    gun.transform.eulerAngles = new Vector3(0, 180, angle);
+                    ShootingScript shooting = new ShootingScript();
+                    shooting.shoot(projectiles[0], enemy.transform, gun.transform, gameObject);
+                }
+            }
+            else
+            {
+                gun.transform.eulerAngles = new Vector3(0, 180, angle);
+                ShootingScript shooting = new ShootingScript();
+                shooting.shoot(projectiles[0], enemy.transform, gun.transform, gameObject);
+            }
+         
+
             attackCooldown = 1 / attackSpeed;
         }        
     }
+
+
 
      public void MeleeAttack()
     {

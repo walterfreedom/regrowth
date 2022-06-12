@@ -11,17 +11,36 @@ public class weaponstats: MonoBehaviour
     public bool isMelee = false;
     public int reach=1;
     GameObject objecttolarp;
+    public bool shotgun;
   
     public void shoot(List<string> enemylist,GameObject shooter,Transform attackposition)
     {
-        Quaternion newrot = attackposition.rotation* Quaternion.Euler(0, 0, -90); ;
-     
-        var newbullet= Instantiate(bullet, attackposition.position,newrot);
-        
-        newbullet.GetComponent<Bullet>().Enemylist.AddRange(enemylist);
-         newbullet.GetComponent<Bullet>().setShooter(gameObject);
-        newbullet.GetComponent<Bullet>().damage = damage;
-         newbullet.active = true;
+        if (shotgun)
+        {
+            float x = -10;
+            for (int i =0; i < 3; i++)
+            {
+                Quaternion newrot = attackposition.rotation * Quaternion.Euler(0, 0, -90+x); ;
+                x += 10;
+                var newbullet = Instantiate(bullet, attackposition.position, newrot);
+
+                newbullet.GetComponent<Bullet>().Enemylist.AddRange(enemylist);
+                newbullet.GetComponent<Bullet>().setShooter(gameObject);
+                newbullet.GetComponent<Bullet>().damage = damage;
+                newbullet.active = true;
+            }
+        }
+        else
+        {
+            Quaternion newrot = attackposition.rotation * Quaternion.Euler(0, 0, -90); ;
+
+            var newbullet = Instantiate(bullet, attackposition.position, newrot);
+
+            newbullet.GetComponent<Bullet>().Enemylist.AddRange(enemylist);
+            newbullet.GetComponent<Bullet>().setShooter(gameObject);
+            newbullet.GetComponent<Bullet>().damage = damage;
+            newbullet.active = true;
+        }
     }
     public void swing(List<string> enemylist, GameObject shooter, Transform attackposition)
     {

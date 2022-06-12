@@ -34,7 +34,7 @@ public class Stats : MonoBehaviour
 
     public float energy = 120;
     public int maxenergy = 120;
-    public bool charging = true;
+    public bool charging = false;
 
     public bool needsair = true;
     public bool userenergy = false;
@@ -56,7 +56,8 @@ public class Stats : MonoBehaviour
     
     private void Awake()
     {
-        if (id == "" && gameObject.tag != "Player")
+        //if it breaks down put the id == "" && back
+        if (gameObject.tag != "Player")
             id = System.Guid.NewGuid().ToString();
         else
         {
