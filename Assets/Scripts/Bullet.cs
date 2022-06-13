@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         gameObject.GetComponent<Rigidbody2D>().velocity=transform.up*20;
-        Invoke("plsdontflyforever", 10);
+        Invoke("plsdontflyforever", 5);
 
     }
     public void setEnemylist(List<string> EnemylistToset)
@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
- 
+           
             if (Enemylist.Contains(collision.gameObject.tag))
             {
                 if (nothit)
@@ -38,6 +38,7 @@ public class Bullet : MonoBehaviour
             if(collision.TryGetComponent<Tilemap>(out Tilemap tilemap) && collision.tag == "Obstacle")
             {
             tilemap.SetTile(new Vector3Int((int)transform.position.x, (int)transform.position.y, 0), null);
+            Destroy(gameObject);
             }
        
     }

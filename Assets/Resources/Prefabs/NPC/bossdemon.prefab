@@ -538,7 +538,7 @@ MonoBehaviour:
   faction: 
   race: 
   health: 0
-  maxhealth: 150
+  maxhealth: 750
   damage: 20
   speed: 5
   basespeed: 0

@@ -16,7 +16,15 @@ public class energysource : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            collision.GetComponent<Stats>().charging = false;
+            
+            if (collision.GetComponent<playerStats>().skillblock)
+            {
+                collision.GetComponent<playerStats>().wascharging = false;
+            }
+            else
+            {
+                collision.GetComponent<Stats>().charging = false;
+            }
         }
     }
 }

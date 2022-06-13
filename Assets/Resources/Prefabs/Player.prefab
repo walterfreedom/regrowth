@@ -950,6 +950,7 @@ MonoBehaviour:
   attackpoint: {fileID: 0}
   gun: {fileID: 0}
   shootdirection: {x: 0, y: 0, z: 0}
+  LARPMACHINE: 0
 --- !u!114 &843860604147733954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -974,8 +975,12 @@ MonoBehaviour:
   craftingUI: {fileID: 366326378618755682}
   chestUI: {fileID: 366326379080333252}
   tempitems: []
+  tempImage: {fileID: 0}
+  busy: 0
   selected: {fileID: 21300000, guid: 0b3639e013f623041a8d916bb5d8f8b2, type: 3}
   defaultspr: {fileID: 21300000, guid: b22fa544bcb59384db40cf6dea0f2724, type: 3}
+  skillblock: 0
+  wascharging: 0
 --- !u!50 &843860604147733981
 Rigidbody2D:
   serializedVersion: 4
@@ -1069,6 +1074,7 @@ MonoBehaviour:
   body: {fileID: 0}
   feet: {fileID: 0}
   whattodrop: {fileID: 0}
+  shieldmode: 0
 --- !u!95 &843860604147733976
 Animator:
   serializedVersion: 3
@@ -1223,6 +1229,7 @@ RectTransform:
   - {fileID: 2068030278533436396}
   - {fileID: 2068030279159879056}
   - {fileID: 2068030277059024972}
+  - {fileID: 6293057344005459417}
   m_Father: {fileID: 843860604147733980}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1564,6 +1571,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277059024979
 GameObject:
   m_ObjectHideFlags: 0
@@ -2120,6 +2129,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277106058072
 GameObject:
   m_ObjectHideFlags: 0
@@ -3003,6 +3014,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277187777326
 GameObject:
   m_ObjectHideFlags: 0
@@ -3141,6 +3154,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277197414642
 GameObject:
   m_ObjectHideFlags: 0
@@ -3965,6 +3980,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277254759865
 GameObject:
   m_ObjectHideFlags: 0
@@ -4498,6 +4515,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277299205227
 GameObject:
   m_ObjectHideFlags: 0
@@ -4636,6 +4655,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277303455214
 GameObject:
   m_ObjectHideFlags: 0
@@ -4849,6 +4870,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277318272183
 GameObject:
   m_ObjectHideFlags: 0
@@ -5330,6 +5353,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277347885764
 GameObject:
   m_ObjectHideFlags: 0
@@ -5814,6 +5839,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277395566949
 GameObject:
   m_ObjectHideFlags: 0
@@ -5952,6 +5979,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277429613083
 GameObject:
   m_ObjectHideFlags: 0
@@ -6910,6 +6939,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277489272919
 GameObject:
   m_ObjectHideFlags: 0
@@ -7335,6 +7366,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277554363018
 GameObject:
   m_ObjectHideFlags: 0
@@ -7548,6 +7581,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277598738256
 GameObject:
   m_ObjectHideFlags: 0
@@ -8349,6 +8384,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277697443219
 GameObject:
   m_ObjectHideFlags: 0
@@ -8487,6 +8524,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277700414846
 GameObject:
   m_ObjectHideFlags: 0
@@ -9089,6 +9128,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277748984184
 GameObject:
   m_ObjectHideFlags: 0
@@ -9518,6 +9559,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277775732527
 GameObject:
   m_ObjectHideFlags: 0
@@ -9656,6 +9699,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277789319177
 GameObject:
   m_ObjectHideFlags: 0
@@ -10274,6 +10319,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030277866637821
 GameObject:
   m_ObjectHideFlags: 0
@@ -11548,6 +11595,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278023833491
 GameObject:
   m_ObjectHideFlags: 0
@@ -11854,6 +11903,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278081521741
 GameObject:
   m_ObjectHideFlags: 0
@@ -12678,6 +12729,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278181964212
 GameObject:
   m_ObjectHideFlags: 0
@@ -12966,6 +13019,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278199764083
 GameObject:
   m_ObjectHideFlags: 0
@@ -13104,6 +13159,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278203285247
 GameObject:
   m_ObjectHideFlags: 0
@@ -13242,6 +13299,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278214129353
 GameObject:
   m_ObjectHideFlags: 0
@@ -13589,6 +13648,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278258212806
 GameObject:
   m_ObjectHideFlags: 0
@@ -14204,6 +14265,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278285042130
 GameObject:
   m_ObjectHideFlags: 0
@@ -14342,6 +14405,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278287600485
 GameObject:
   m_ObjectHideFlags: 0
@@ -14853,6 +14918,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278365654812
 GameObject:
   m_ObjectHideFlags: 0
@@ -15306,6 +15373,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278423181847
 GameObject:
   m_ObjectHideFlags: 0
@@ -15444,6 +15513,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278423986747
 GameObject:
   m_ObjectHideFlags: 0
@@ -15791,6 +15862,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278500821190
 GameObject:
   m_ObjectHideFlags: 0
@@ -16138,6 +16211,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278533436403
 GameObject:
   m_ObjectHideFlags: 0
@@ -16387,6 +16462,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278570649153
 GameObject:
   m_ObjectHideFlags: 0
@@ -16525,6 +16602,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278585586019
 GameObject:
   m_ObjectHideFlags: 0
@@ -16797,6 +16876,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278607832119
 GameObject:
   m_ObjectHideFlags: 0
@@ -17144,6 +17225,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278620923241
 GameObject:
   m_ObjectHideFlags: 0
@@ -17491,6 +17574,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278636483772
 GameObject:
   m_ObjectHideFlags: 0
@@ -17763,6 +17848,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278675081158
 GameObject:
   m_ObjectHideFlags: 0
@@ -18392,6 +18479,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278726930333
 GameObject:
   m_ObjectHideFlags: 0
@@ -18605,6 +18694,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278780273839
 GameObject:
   m_ObjectHideFlags: 0
@@ -18743,6 +18834,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278781725073
 GameObject:
   m_ObjectHideFlags: 0
@@ -19090,6 +19183,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278814827972
 GameObject:
   m_ObjectHideFlags: 0
@@ -19303,6 +19398,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278825695388
 GameObject:
   m_ObjectHideFlags: 0
@@ -19441,6 +19538,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278830045581
 GameObject:
   m_ObjectHideFlags: 0
@@ -19922,6 +20021,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278920781620
 GameObject:
   m_ObjectHideFlags: 0
@@ -20135,6 +20236,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030278945913131
 GameObject:
   m_ObjectHideFlags: 0
@@ -20557,6 +20660,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030279037880502
 GameObject:
   m_ObjectHideFlags: 0
@@ -20695,6 +20800,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030279042157952
 GameObject:
   m_ObjectHideFlags: 0
@@ -20833,6 +20940,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030279047743029
 GameObject:
   m_ObjectHideFlags: 0
@@ -20971,6 +21080,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030279048680598
 GameObject:
   m_ObjectHideFlags: 0
@@ -21184,6 +21295,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030279096860728
 GameObject:
   m_ObjectHideFlags: 0
@@ -21322,6 +21435,8 @@ MonoBehaviour:
   storedItems: []
   pstats: {fileID: 0}
   inventoryType: storage
+  ownerID: 
+  slotindex: 0
 --- !u!1 &2068030279107708706
 GameObject:
   m_ObjectHideFlags: 0
@@ -22060,6 +22175,81 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2426994390724838008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6293057344005459417}
+  - component: {fileID: 2788594559501648790}
+  - component: {fileID: 5905898591790697880}
+  m_Layer: 5
+  m_Name: blackout
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &6293057344005459417
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2426994390724838008}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1572820613210337743}
+  m_RootOrder: 22
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -2.651, y: -12.5704}
+  m_SizeDelta: {x: 805.3, y: 480.6168}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2788594559501648790
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2426994390724838008}
+  m_CullTransparentMesh: 1
+--- !u!114 &5905898591790697880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2426994390724838008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.34117648}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &3722607564183237529
 GameObject:
   m_ObjectHideFlags: 0

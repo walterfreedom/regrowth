@@ -12,7 +12,7 @@ public class faketeleport : MonoBehaviour
         if (collision.tag == "Player")
         {
             collision.transform.position = hospitalTP.transform.position;
-            //collision.GetComponent<playerStats>().followerList[0].transform.position = FollowTP.transform.position;
+            collision.GetComponent<playerStats>().followerList[0].transform.position = FollowTP.transform.position;
         }
     }
 }

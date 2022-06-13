@@ -38,6 +38,7 @@ public class playerStats : MonoBehaviour
     public bool busy = false;
     public Sprite selected;
     public Sprite defaultspr;
+    public bool skillblock = false;
 
     shoopKeeper lastshop;
 
@@ -132,9 +133,9 @@ public class playerStats : MonoBehaviour
             //}
 
         }
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && !skillblock)
         {
-            gameObject.GetComponent<Stats>().energy -= Time.deltaTime*4;
+            gameObject.GetComponent<Stats>().energy -= Time.deltaTime*40;
             
             gameObject.GetComponent<movement>().speed = 12;
         }
@@ -247,7 +248,7 @@ public class playerStats : MonoBehaviour
            
         }
 
-        if (Input.GetKeyDown("q"))
+        if (Input.GetKeyDown("q") && !skillblock)
         {
             gameObject.GetComponent<Stats>().shieldmode=!gameObject.GetComponent<Stats>().shieldmode;
             transform.Find("shield").gameObject.SetActive(!transform.Find("shield").gameObject.active);
@@ -472,9 +473,31 @@ public class playerStats : MonoBehaviour
     #region Survival
 
 
+
+    public bool wascharging = false;
     public void updateoxygen(float updatedoxygen)
     {
         oxygencanvas.GetComponent<Slider>().value= updatedoxygen;
+        if (updatedoxygen < 1)
+        {
+            if (gameObject.GetComponent<Stats>().charging)
+            {
+                wascharging = true;
+            }
+            gameObject.transform.Find("Canvas").Find("blackout").gameObject.active = true;
+            gameObject.GetComponent<Stats>().charging = true;
+            skillblock = true;
+            gameObject.GetComponent<Stats>().shieldmode = false;
+            transform.Find("shield").gameObject.SetActive(false);
+            
+        }
+        if (skillblock && updatedoxygen>95)
+        {
+            gameObject.transform.Find("Canvas").Find("blackout").gameObject.active = false;
+            if(!wascharging)
+            gameObject.GetComponent<Stats>().charging = false;
+            skillblock = false;
+        }
     }
 
     #endregion
